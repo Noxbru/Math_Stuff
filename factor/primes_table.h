@@ -3,8 +3,12 @@
 
 #include <stdio.h>
 
-unsigned int primes_table_size = 0;
-unsigned char *primes_table = NULL;
+extern unsigned int primes_table_size;
+#if PRIMES_TABLE_FAT
+extern unsigned int *primes_table;
+#else
+extern unsigned char *primes_table;
+#endif
 
 void generate_primes_table(unsigned int size);
 
