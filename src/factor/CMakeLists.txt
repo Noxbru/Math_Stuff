@@ -3,3 +3,5 @@ add_library(factor
     trial_division.c)
 
 target_include_directories(factor PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+
+set(${factor_include_dir} ${CMAKE_CURRENT_SOURCE_DIR})

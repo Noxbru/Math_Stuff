@@ -12,3 +12,13 @@ set(CMAKE_C_FLAGS_RELEASE "-O2 -DNDEBUG"
 set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -Wall -Wextra -pedantic")
 
 add_subdirectory(src)
+
+
+# Testing Stuff
+
+option(BUILD_TESTS "" OFF)
+enable_testing()
+
+if(BUILD_TESTS OR (CMAKE_BUILD_TYPE STREQUAL Debug))
+    add_subdirectory(test)
+endif()
