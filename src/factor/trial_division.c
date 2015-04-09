@@ -14,9 +14,9 @@ unsigned int trial_division(mpz_ptr n)
     /* In both cases we use at least a table with
      * 16 KB of memory */
 #if PRIMES_TABLE_FAT
-    generate_primes_table(16384);
-#else
     generate_primes_table(16384/4);
+#else
+    generate_primes_table(16384);
 #endif
 
     prime = primes_table[0];
