@@ -51,6 +51,7 @@ unsigned int trial_division_ui(mpz_ptr n)
 
     /* 4294967291 is the biggest prime that fits in a 32
      * bits word */
+    do
     {
         if(mpz_divisible_ui_p(n, prime))
             return prime;
