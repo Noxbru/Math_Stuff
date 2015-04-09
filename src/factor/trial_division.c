@@ -1,6 +1,7 @@
 #include <gmp.h>
 
 #include "primes_table.h"
+#include "factor.h"
 
 unsigned int trial_division(mpz_ptr n)
 {
