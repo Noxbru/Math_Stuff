@@ -1,4 +1,5 @@
 add_library(factor
+    fermat.c
     primes_table.c
     trial_division.c)
 
