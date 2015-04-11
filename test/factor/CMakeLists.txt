@@ -1,19 +1,18 @@
-add_executable(prime_test prime_test.c)
-add_executable(factor_trial_division factor_trial_division.c)
-add_executable(fermat fermat.c)
-
-target_link_libraries(prime_test factor m)
-target_link_libraries(factor_trial_division factor m gmp)
-target_link_libraries(fermat factor m gmp)
-target_include_directories(prime_test PUBLIC ${factor_include_dir})
-target_include_directories(factor_trial_division PUBLIC ${factor_include_dir})
-target_include_directories(fermat PUBLIC ${factor_include_dir})
+macro(prepare_executable target source)
+    add_executable(${target} ${source})
+    target_link_libraries(${target} factor m gmp)
+    target_include_directories(${target} PUBLIC ${factor_include_dir})
+endmacro(prepare_executable)
 
 macro (do_test test_name test_executable arg result)
     add_test (${test_name} ${test_executable} ${arg})
     set_tests_properties (${test_name}
         PROPERTIES PASS_REGULAR_EXPRESSION ${result})
 endmacro (do_test)
+
+prepare_executable(prime_test prime_test.c)
+prepare_executable(factor_trial_division factor_trial_division.c)
+prepare_executable(fermat fermat.c)
 
 do_test(prime_10 prime_test 10 29)
 do_test(prime_15 prime_test 15 47)
