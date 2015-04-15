@@ -1,5 +1,6 @@
 add_library(factor
     fermat.c
+    pollard_rho.c
     primes_table.c
     trial_division.c)
 
