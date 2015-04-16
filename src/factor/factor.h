@@ -11,5 +11,6 @@ unsigned int trial_division_ui(mpz_ptr n);
 void fermat(mpz_ptr out, mpz_ptr n);
 
 void pollard_rho(mpz_ptr out, mpz_ptr n);
+void pollard_rho2(mpz_ptr out, mpz_ptr n);
 
 #endif /* end of include guard: FACTOR_H */

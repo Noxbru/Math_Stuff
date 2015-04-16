@@ -18,6 +18,7 @@ prepare_executable(prime_test prime_test.c)
 prepare_executable(factor_trial_division factor_trial_division.c)
 prepare_executable(fermat fermat.c)
 prepare_executable(pollard_rho pollard_rho.c)
+prepare_executable(pollard_rho2 pollard_rho2.c)
 
 do_test(prime_10 prime_test 10 29)
 do_test(prime_15 prime_test 15 47)
@@ -42,6 +43,12 @@ do_test_factor(fermat_64bit fermat
 
 do_test_factor(pollard_rho_188695899619 pollard_rho 188695899619 393191 479909)
 do_test_factor(pollard_rho_108bit pollard_rho
+    408077400961771295988849803666327   # 108 bit number
+    23196514630490635249                #  64 bit number
+    17592186044423)                     #  44 bit number
+
+do_test_factor(pollard_rho2_188695899619 pollard_rho2 188695899619 393191 479909)
+do_test_factor(pollard_rho2_108bit pollard_rho2
     408077400961771295988849803666327   # 108 bit number
     23196514630490635249                #  64 bit number
     17592186044423)                     #  44 bit number
