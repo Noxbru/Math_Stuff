@@ -55,7 +55,15 @@ do_test_factor(pollard_rho2_108bit pollard_rho2
     17592186044423)                     #  44 bit number
 
 do_test_factor(pollard_p_1_188695899619 pollard_p_1 188695899619 393191 479909)
-do_test_factor(pollard_p_1_108bit pollard_p_1
+do_test_factor(pollard_p_1_108bit1 pollard_p_1
     398897411515552667992550960001961   # 108 bit number
     21357450167740940629                #  64 bit number
     18677202024709)                     #  44 bit number
+do_test_factor(pollard_p_1_108bit2 pollard_p_1
+    1078836317125700231038586227595339   # 108 bit number
+    33183360053317144537                 #  64 bit number
+    32511364593347)                      #  44 bit number
+do_test_factor(pollard_p_1_108bit3 pollard_p_1
+    576021769329963795775916997929453   # 108 bit number
+    20043011670448667359                #  64 bit number
+    28739282239667)                     #  44 bit number
