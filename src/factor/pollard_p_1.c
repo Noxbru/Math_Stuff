@@ -6,7 +6,7 @@
 
 void pollard_p_1(mpz_ptr out, mpz_ptr n, unsigned int b)
 {
-    unsigned int i, j, prime;
+    unsigned int i, prime;
     mpz_t aux0, aux1, aux2;
     mpz_t base;
 
@@ -24,19 +24,10 @@ void pollard_p_1(mpz_ptr out, mpz_ptr n, unsigned int b)
         prime = get_prime(i);
         unsigned int top = mpz_sizeinbase(aux0, 2) /
                            log2(prime);
+        mpz_ui_pow_ui(aux1, prime, top);
+        mpz_powm(aux2, base, aux1, n);
 
-        mpz_powm_ui(aux1, base, prime, n);
-
-        j = 1;
-        do
-        {
-            mpz_powm_ui(aux2, aux1, prime, n);
-            mpz_powm_ui(aux1, aux2, prime, n);
-            j+=2;
-        }
-        while (j < top);
-
-        mpz_swap(base, aux1);
+        mpz_swap(base, aux2);
 
         mpz_sub_ui(aux1, base, 1);
 
