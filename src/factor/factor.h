@@ -15,4 +15,6 @@ void pollard_rho2(mpz_ptr out, mpz_ptr n);
 
 void pollard_p_1(mpz_ptr out, mpz_ptr n, unsigned int b);
 
+void shanks(mpz_ptr out, mpz_ptr n);
+
 #endif /* end of include guard: FACTOR_H */
