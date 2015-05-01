@@ -20,6 +20,7 @@ prepare_executable(fermat fermat.c)
 prepare_executable(pollard_rho pollard_rho.c)
 prepare_executable(pollard_rho2 pollard_rho2.c)
 prepare_executable(pollard_p_1 pollard_p_1.c)
+prepare_executable(shanks shanks.c)
 
 do_test(prime_10 prime_test 10 29)
 do_test(prime_15 prime_test 15 47)
@@ -67,3 +68,6 @@ do_test_factor(pollard_p_1_108bit3 pollard_p_1
     576021769329963795775916997929453   # 108 bit number
     20043011670448667359                #  64 bit number
     28739282239667)                     #  44 bit number
+
+# Hard to find some number that the crappy algorithm for squfof I have works...
+do_test_factor(shanks_32588192363  shanks  32588192363 180511 180533)
