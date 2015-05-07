@@ -19,6 +19,7 @@ prepare_executable(factor_trial_division factor_trial_division.c)
 prepare_executable(fermat fermat.c)
 prepare_executable(pollard_rho pollard_rho.c)
 prepare_executable(pollard_rho2 pollard_rho2.c)
+prepare_executable(pollard_rho3 pollard_rho3.c)
 prepare_executable(pollard_p_1 pollard_p_1.c)
 prepare_executable(shanks shanks.c)
 
@@ -67,6 +68,9 @@ do_test_factor(pollard_rho_108bit1 pollard_rho ${108bit1})
 
 do_test_factor(pollard_rho2_tiny5   pollard_rho2 ${tiny5})
 do_test_factor(pollard_rho2_108bit1 pollard_rho2 ${108bit1})
+
+do_test_factor(pollard_rho3_tiny5   pollard_rho3 ${tiny5})
+do_test_factor(pollard_rho3_108bit1 pollard_rho3 ${108bit1})
 
 do_test_factor(pollard_p_1_tiny5   pollard_p_1 ${tiny5})
 do_test_factor(pollard_p_1_108bit2 pollard_p_1 ${108bit2})

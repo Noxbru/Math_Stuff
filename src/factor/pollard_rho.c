@@ -92,3 +92,75 @@ void pollard_rho2(mpz_ptr out, mpz_ptr n)
 
     mpz_clears(seq_1, seq_2, aux0, aux1, aux2, accumulator, NULL);
 }
+
+/* More of Brent's improvements to Pollard's Rho:
+ * Only calculate F(x) once and only compare some
+ * of the values */
+void pollard_rho3(mpz_ptr out, mpz_ptr n)
+{
+    unsigned int i, j, k;
+    unsigned int reps;
+    mpz_t seq_1, seq_2;
+    mpz_t aux0, aux1;
+    mpz_t accumulator;
+
+    mpz_init(seq_1);
+    mpz_inits(aux0, aux1, accumulator, NULL);
+
+    mpz_sqrt(seq_1, n);
+    mpz_init_set(seq_2, seq_1);
+
+    reps = mpz_sizeinbase(n, 2);
+
+    mpz_mul(aux0, seq_2, seq_2);
+    mpz_add_ui(aux0, aux0, 1);
+    mpz_mod(seq_2, aux0, n);
+
+    j = 1;
+    do
+    {
+        i = j;
+        mpz_set(seq_1, seq_2);
+
+        do
+        {
+            mpz_mul(aux0, seq_2, seq_2);
+            mpz_add_ui(aux0, aux0, 1);
+            mpz_mod(seq_2, aux0, n);
+
+            j++;
+        } while(j < 3*(i + 1)/2);
+
+        do
+        {
+            k = 0;
+            mpz_set_ui(accumulator, 1);
+            do
+            {
+                mpz_mul(aux0, seq_2, seq_2);
+                mpz_add_ui(aux0, aux0, 1);
+                mpz_mod(seq_2, aux0, n);
+
+                mpz_sub(aux1, seq_1, seq_2);
+                mpz_abs(aux1, aux1);
+
+                mpz_mul(aux0, accumulator, aux1);
+                mpz_mod(accumulator, aux0, n);
+
+                k++;
+                j++;
+            }
+            while(k < reps && j < 2*i + 1);
+
+            mpz_gcd(out, accumulator, n);
+
+            if(mpz_cmp_ui(out,1) != 0)
+                goto out;
+
+        } while(j < 2*i + 1);
+    }
+    while (1);
+
+out:
+    mpz_clears(seq_1, seq_2, aux0, aux1, accumulator, NULL);
+}
