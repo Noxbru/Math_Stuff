@@ -51,6 +51,16 @@ set(108bit3 1078836317125700231038586227595339
 set(108bit4 576021769329963795775916997929453
     20043011670448667359 28739282239667)
 
+# The number that shanks was trying to factor when he developed his
+# SQUFOF algorithm, 2^60 + 2^30 - 1, the mean of M_31 and M_61
+# the Mersenne primes
+set(shanks1 1152921505680588799
+    139001459 8294312261)
+
+# Product of two twin primes: 2^50 + 2^30 + 2^10 ± 1
+set(big1 1267653018083327397467897462783
+    1125900980585471 1125900980585473)
+
 do_test(prime_10 prime_test 10 29)
 do_test(prime_15 prime_test 15 47)
 
