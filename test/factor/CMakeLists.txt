@@ -15,6 +15,7 @@ macro(do_test_factor test_name test_executable arg result1 result2)
 endmacro(do_test_factor)
 
 prepare_executable(prime_test prime_test.c)
+prepare_executable(elliptic_curve elliptic.c)
 prepare_executable(factor_trial_division factor_trial_division.c)
 prepare_executable(fermat fermat.c)
 prepare_executable(pollard_rho pollard_rho.c)
@@ -89,3 +90,7 @@ do_test_factor(pollard_p_1_108bit4 pollard_p_1 ${108bit4})
 
 # Hard to find some number that the crappy algorithm for squfof I have works...
 do_test_factor(shanks_tiny4  shanks  ${tiny4})
+
+# Sill very slow, so don't do many tests...
+do_test_factor(elliptic_curve_tiny5   elliptic_curve ${tiny5})
+do_test_factor(elliptic_curve_shanks1 elliptic_curve ${shanks1})
