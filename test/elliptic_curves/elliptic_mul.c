@@ -15,6 +15,9 @@ int main(int argc, const char *argv[])
     mpz_init_set_str(ctx.A, argv[1], 0);
     mpz_init_set_str(ctx.B, argv[2], 0);
     mpz_init_set_str(ctx.m, argv[3], 0);
+#if FAT_OBJECTS
+    mpz_inits(ctx.aux1, ctx.aux2, ctx.lambda, ctx.nu, NULL);
+#endif
 
     mpz_init_set_str(x1, argv[4], 0);
     mpz_init_set_str(y1, argv[5], 0);

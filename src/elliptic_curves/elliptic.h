@@ -7,6 +7,11 @@ typedef struct
 {
     mpz_t A, B;
     mpz_t m;
+
+#if FAT_OBJECTS
+    mpz_t aux1, aux2;
+    mpz_t lambda, nu;
+#endif
 } elliptic_ctx;
 
 int elliptic_sum(mpz_ptr x_out, mpz_ptr y_out,

@@ -13,6 +13,9 @@ void elliptic(mpz_ptr out, mpz_ptr n)
     mpz_t x, y;
 
     mpz_inits(x, y, e_ctx.A, e_ctx.B, NULL);
+#if FAT_OBJECTS
+    mpz_inits(e_ctx.aux1, e_ctx.aux2, e_ctx.lambda, e_ctx.nu, NULL);
+#endif
     mpz_init_set(e_ctx.m, n);
     generate_primes_table(20000);
 

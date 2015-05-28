@@ -23,11 +23,18 @@ int elliptic_sum(mpz_ptr x_out, mpz_ptr y_out,
     }
     else
     {
+#if FAT_OBJECTS
+        mpz_ptr aux1 = ctx->aux1;
+        mpz_ptr aux2 = ctx->aux2;
+        mpz_ptr lambda = ctx->lambda;
+        mpz_ptr nu = ctx->nu;
+#else
         mpz_t aux1, aux2;
         mpz_t lambda, nu;
 
         mpz_inits(aux1, aux2, NULL);
         mpz_inits(lambda, nu, NULL);
+#endif
 
         mpz_sub(aux1, x_in2, x_in1);
         err = mpz_invert(aux2, aux1, ctx->m);
@@ -55,7 +62,10 @@ int elliptic_sum(mpz_ptr x_out, mpz_ptr y_out,
         mpz_mod(y_out, y_out, ctx->m);
 
 clean:
+        ;
+#if !FAT_OBJECTS
         mpz_clears(aux1, aux2, lambda, nu, NULL);
+#endif
     }
 
     return !err;
@@ -66,8 +76,16 @@ int elliptic_double(mpz_ptr x_out, mpz_ptr y_out,
         elliptic_ctx *ctx)
 {
     int err;
+
+#if FAT_OBJECTS
+        mpz_ptr aux1 = ctx->aux1;
+        mpz_ptr aux2 = ctx->aux2;
+        mpz_ptr lambda = ctx->lambda;
+        mpz_ptr nu = ctx->nu;
+#else
     mpz_t aux1, aux2;
     mpz_t lambda, nu;
+#endif
 
     if(mpz_cmp_ui(y_in, 0) == 0)
     {
@@ -75,8 +93,10 @@ int elliptic_double(mpz_ptr x_out, mpz_ptr y_out,
         return 0;
     }
 
+#if !FAT_OBJECTS
     mpz_inits(aux1, aux2, NULL);
     mpz_inits(lambda, nu, NULL);
+#endif
 
     mpz_add(aux1, y_in, y_in);
     err = mpz_invert(aux2, aux1, ctx->m);
@@ -104,7 +124,9 @@ int elliptic_double(mpz_ptr x_out, mpz_ptr y_out,
     mpz_mod(x_out, x_out, ctx->m);
     mpz_mod(y_out, y_out, ctx->m);
 clean:
+#if !FAT_OBJECTS
     mpz_clears(aux1, aux2, lambda, nu, NULL);
+#endif
 
     return !err;
 }
