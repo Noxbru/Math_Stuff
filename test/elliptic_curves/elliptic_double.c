@@ -18,7 +18,7 @@ int main(int argc, const char *argv[])
     mpz_init_set_str(x1, argv[4], 0);
     mpz_init_set_str(y1, argv[5], 0);
 
-    elliptic_double(x1, y1, x1, y1, ctx);
+    elliptic_double(x1, y1, x1, y1, &ctx);
 
     gmp_printf("%Zd\t%Zd\n", x1, y1);
 

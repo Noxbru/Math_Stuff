@@ -20,7 +20,7 @@ int main(int argc, const char *argv[])
     mpz_init_set_str(y1, argv[5], 0);
     sscanf(argv[6],"%u",&times);
 
-    elliptic_mul(x1, y1, x1, y1, times, ctx);
+    elliptic_mul(x1, y1, x1, y1, times, &ctx);
 
     gmp_printf("%Zd\t%Zd\n", x1, y1);
 

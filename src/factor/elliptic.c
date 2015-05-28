@@ -25,7 +25,7 @@ void elliptic(mpz_ptr out, mpz_ptr n)
 
         for(i = 1; i < 20000; i++)
         {
-            if(elliptic_mul(x, y, x, y, i, e_ctx))
+            if(elliptic_mul(x, y, x, y, i, &e_ctx))
             {
                 mpz_set(out, x);
                 goto clean;

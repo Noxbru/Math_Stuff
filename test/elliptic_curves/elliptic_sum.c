@@ -21,7 +21,7 @@ int main(int argc, const char *argv[])
     mpz_init_set_str(x2, argv[6], 0);
     mpz_init_set_str(y2, argv[7], 0);
 
-    elliptic_sum(x1, y1, x1, y1, x2, y2, ctx);
+    elliptic_sum(x1, y1, x1, y1, x2, y2, &ctx);
 
     gmp_printf("%Zd\t%Zd\n", x1, y1);
 

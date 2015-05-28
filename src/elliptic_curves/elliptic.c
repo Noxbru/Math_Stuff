@@ -5,7 +5,7 @@
 int elliptic_sum(mpz_ptr x_out, mpz_ptr y_out,
         mpz_ptr x_in1, mpz_ptr y_in1,
         mpz_ptr x_in2, mpz_ptr y_in2,
-        elliptic_ctx ctx)
+        elliptic_ctx *ctx)
 {
     int err;
 
@@ -30,10 +30,10 @@ int elliptic_sum(mpz_ptr x_out, mpz_ptr y_out,
         mpz_inits(lambda, nu, NULL);
 
         mpz_sub(aux1, x_in2, x_in1);
-        err = mpz_invert(aux2, aux1, ctx.m);
+        err = mpz_invert(aux2, aux1, ctx->m);
         if(err == 0)
         {
-            mpz_gcd(x_out, aux1, ctx.m);
+            mpz_gcd(x_out, aux1, ctx->m);
             goto clean;
         }
 
@@ -51,8 +51,8 @@ int elliptic_sum(mpz_ptr x_out, mpz_ptr y_out,
         mpz_neg(y_out, nu);
         mpz_submul(y_out, x_out, lambda);   /* y' = -(lambda * x' + nu) */
 
-        mpz_mod(x_out, x_out, ctx.m);
-        mpz_mod(y_out, y_out, ctx.m);
+        mpz_mod(x_out, x_out, ctx->m);
+        mpz_mod(y_out, y_out, ctx->m);
 
 clean:
         mpz_clears(aux1, aux2, lambda, nu, NULL);
@@ -63,7 +63,7 @@ clean:
 
 int elliptic_double(mpz_ptr x_out, mpz_ptr y_out,
         mpz_ptr x_in, mpz_ptr y_in,
-        elliptic_ctx ctx)
+        elliptic_ctx *ctx)
 {
     int err;
     mpz_t aux1, aux2;
@@ -79,16 +79,16 @@ int elliptic_double(mpz_ptr x_out, mpz_ptr y_out,
     mpz_inits(lambda, nu, NULL);
 
     mpz_add(aux1, y_in, y_in);
-    err = mpz_invert(aux2, aux1, ctx.m);
+    err = mpz_invert(aux2, aux1, ctx->m);
     if(err == 0)
     {
-        mpz_gcd(x_out, aux1, ctx.m);
+        mpz_gcd(x_out, aux1, ctx->m);
         goto clean;
     }
 
     mpz_mul(aux1, x_in, x_in);
     mpz_mul_ui(aux1, aux1, 3);
-    mpz_add(aux1, aux1, ctx.A);
+    mpz_add(aux1, aux1, ctx->A);
     mpz_mul(lambda, aux1, aux2);    /* lambda = (3x + a) / 2y */
 
     mpz_mul(aux1, x_in, lambda);
@@ -101,8 +101,8 @@ int elliptic_double(mpz_ptr x_out, mpz_ptr y_out,
     mpz_neg(y_out, nu);
     mpz_submul(y_out, x_out, lambda);   /* y' = -(lambda * x' + nu) */
 
-    mpz_mod(x_out, x_out, ctx.m);
-    mpz_mod(y_out, y_out, ctx.m);
+    mpz_mod(x_out, x_out, ctx->m);
+    mpz_mod(y_out, y_out, ctx->m);
 clean:
     mpz_clears(aux1, aux2, lambda, nu, NULL);
 
@@ -112,7 +112,7 @@ clean:
 int elliptic_mul(mpz_ptr x_out, mpz_ptr y_out,
         mpz_ptr x_in, mpz_ptr y_in,
         unsigned int times,
-        elliptic_ctx ctx)
+        elliptic_ctx *ctx)
 {
     int err;
     mpz_t aux1, aux2;
