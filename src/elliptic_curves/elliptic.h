@@ -14,6 +14,26 @@ typedef struct
 #endif
 } elliptic_ctx;
 
+void static inline elliptic_init(elliptic_ctx *ctx)
+{
+    mpz_inits(ctx->A, ctx->B, ctx->m, NULL);
+#if FAT_OBJECTS
+    mpz_inits(ctx->aux1, ctx->aux2, ctx->lambda, ctx->nu, NULL);
+#endif
+}
+
+void static inline elliptic_init_set(elliptic_ctx *ctx,
+        mpz_ptr A, mpz_ptr B, mpz_ptr m)
+{
+    mpz_init_set(ctx->A, A);
+    mpz_init_set(ctx->B, B);
+    mpz_init_set(ctx->m, m);
+
+#if FAT_OBJECTS
+    mpz_inits(ctx->aux1, ctx->aux2, ctx->lambda, ctx->nu, NULL);
+#endif
+}
+
 int elliptic_sum(mpz_ptr x_out, mpz_ptr y_out,
         mpz_ptr x_in1, mpz_ptr y_in1,
         mpz_ptr x_in2, mpz_ptr y_in2,
