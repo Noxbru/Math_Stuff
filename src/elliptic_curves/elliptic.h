@@ -34,6 +34,14 @@ void static inline elliptic_init_set(elliptic_ctx *ctx,
 #endif
 }
 
+void static inline elliptic_clear(elliptic_ctx *ctx)
+{
+    mpz_clears(ctx->A, ctx->B, ctx->m, NULL);
+#if FAT_OBJECTS
+    mpz_clears(ctx->aux1, ctx->aux2, ctx->lambda, ctx->nu, NULL);
+#endif
+}
+
 int elliptic_sum(mpz_ptr x_out, mpz_ptr y_out,
         mpz_ptr x_in1, mpz_ptr y_in1,
         mpz_ptr x_in2, mpz_ptr y_in2,
