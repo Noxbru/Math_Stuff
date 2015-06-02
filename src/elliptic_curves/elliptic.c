@@ -78,10 +78,10 @@ int elliptic_double(mpz_ptr x_out, mpz_ptr y_out,
     int err;
 
 #if FAT_OBJECTS
-        mpz_ptr aux1 = ctx->aux1;
-        mpz_ptr aux2 = ctx->aux2;
-        mpz_ptr lambda = ctx->lambda;
-        mpz_ptr nu = ctx->nu;
+    mpz_ptr aux1 = ctx->aux1;
+    mpz_ptr aux2 = ctx->aux2;
+    mpz_ptr lambda = ctx->lambda;
+    mpz_ptr nu = ctx->nu;
 #else
     mpz_t aux1, aux2;
     mpz_t lambda, nu;
