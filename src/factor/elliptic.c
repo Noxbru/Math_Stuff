@@ -37,6 +37,7 @@ void elliptic(mpz_ptr out, mpz_ptr n)
     }
 
 clean:
-    mpz_clears(x, y, e_ctx.A, e_ctx.B, e_ctx.m, NULL);
+    mpz_clears(x, y, NULL);
+    elliptic_clear(&e_ctx);
     return;
 }
