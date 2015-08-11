@@ -94,3 +94,4 @@ do_test_factor(shanks_tiny4  shanks  ${tiny4})
 # Sill very slow, so don't do many tests...
 do_test_factor(elliptic_curve_tiny5   elliptic_curve ${tiny5})
 do_test_factor(elliptic_curve_shanks1 elliptic_curve ${shanks1})
+do_test_factor(elliptic_curve_108bit1 elliptic_curve ${108bit1})
