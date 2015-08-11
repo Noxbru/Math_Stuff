@@ -10,7 +10,7 @@ void elliptic(mpz_ptr out, mpz_ptr n)
     unsigned int i;
     int a;
     elliptic_ctx e_ctx;
-    mpz_t x, y;
+    elliptic_point point;
 
     /*
      * Numbers obtained by having 3 numbers (n1..n3)
@@ -34,30 +34,30 @@ void elliptic(mpz_ptr out, mpz_ptr n)
         { 46, 280,  -387, -1134}   // (5, 7, 8)
     };
 
-    mpz_inits(x, y, NULL);
+    mpz_inits(point.x, point.y, NULL);
     elliptic_init(&e_ctx);
     mpz_set(e_ctx.m, n);
     generate_primes_table(20000);
 
     for(a = 0; a < 11; a++)
     {
-        mpz_set_ui(x, coeffs[a][0]);
-        mpz_set_ui(y, coeffs[a][1]);
+        mpz_set_ui(point.x, coeffs[a][0]);
+        mpz_set_ui(point.y, coeffs[a][1]);
         mpz_set_si(e_ctx.A, coeffs[a][2]);
         mpz_set_si(e_ctx.B, coeffs[a][3]);
 
         for(i = 1; i < 20000; i++)
         {
-            if(elliptic_mul(x, y, x, y, get_prime(i), &e_ctx))
+            if(elliptic_mul(&point, &point, get_prime(i), &e_ctx))
             {
-                mpz_set(out, x);
+                mpz_set(out, point.x);
                 goto clean;
             }
         }
     }
 
 clean:
-    mpz_clears(x, y, NULL);
+    mpz_clears(point.x, point.y, NULL);
     elliptic_clear(&e_ctx);
     return;
 }

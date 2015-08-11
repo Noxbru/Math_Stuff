@@ -2,18 +2,18 @@
 
 #include "elliptic.h"
 
-int elliptic_sum(mpz_ptr x_out, mpz_ptr y_out,
-        mpz_ptr x_in1, mpz_ptr y_in1,
-        mpz_ptr x_in2, mpz_ptr y_in2,
+int elliptic_sum(elliptic_point *p_out,
+        elliptic_point *p_in1,
+        elliptic_point *p_in2,
         elliptic_ctx *ctx)
 {
     int err;
 
-    if(mpz_cmp(x_in1, x_in2) == 0)
+    if(mpz_cmp(p_in1->x, p_in2->x) == 0)
     {
-        if(mpz_cmp(y_in1, y_in2) == 0)
+        if(mpz_cmp(p_in1->y, p_in2->y) == 0)
         {
-            return elliptic_double(x_out, y_out, x_in1, y_in1, ctx);
+            return elliptic_double(p_out, p_in1, ctx);
         }
         else
         {
@@ -36,30 +36,30 @@ int elliptic_sum(mpz_ptr x_out, mpz_ptr y_out,
         mpz_inits(lambda, nu, NULL);
 #endif
 
-        mpz_sub(aux1, x_in2, x_in1);
+        mpz_sub(aux1, p_in2->x, p_in1->x);
         err = mpz_invert(aux2, aux1, ctx->m);
         if(err == 0)
         {
-            mpz_gcd(x_out, aux1, ctx->m);
+            mpz_gcd(p_out->x, aux1, ctx->m);
             goto clean;
         }
 
-        mpz_sub(aux1, y_in2, y_in1);
+        mpz_sub(aux1, p_in2->y, p_in1->y);
         mpz_mul(lambda, aux1, aux2);    /* lambda = (y2 - y1) / (x2 - x1) */
 
-        mpz_mul(aux1, x_in1, lambda);
-        mpz_sub(nu, y_in1, aux1);       /* nu = y1 - lambda * x1 */
+        mpz_mul(aux1, p_in1->x, lambda);
+        mpz_sub(nu, p_in1->y, aux1);       /* nu = y1 - lambda * x1 */
 
         mpz_mul(aux1, lambda, lambda);
-        mpz_sub(aux1, aux1, x_in1);
-        mpz_sub(aux1, aux1, x_in2);
-        mpz_swap(x_out, aux1);          /* x' = lambda^2 - x1 - x2 */
+        mpz_sub(aux1, aux1, p_in1->x);
+        mpz_sub(aux1, aux1, p_in2->x);
+        mpz_swap(p_out->x, aux1);          /* x' = lambda^2 - x1 - x2 */
 
-        mpz_neg(y_out, nu);
-        mpz_submul(y_out, x_out, lambda);   /* y' = -(lambda * x' + nu) */
+        mpz_neg(p_out->y, nu);
+        mpz_submul(p_out->y, p_out->x, lambda);   /* y' = -(lambda * x' + nu) */
 
-        mpz_mod(x_out, x_out, ctx->m);
-        mpz_mod(y_out, y_out, ctx->m);
+        mpz_mod(p_out->x, p_out->x, ctx->m);
+        mpz_mod(p_out->y, p_out->y, ctx->m);
 
 clean:
         ;
@@ -71,8 +71,8 @@ clean:
     return !err;
 }
 
-int elliptic_double(mpz_ptr x_out, mpz_ptr y_out,
-        mpz_ptr x_in, mpz_ptr y_in,
+int elliptic_double(elliptic_point *p_out,
+        elliptic_point *p_in,
         elliptic_ctx *ctx)
 {
     int err;
@@ -87,7 +87,7 @@ int elliptic_double(mpz_ptr x_out, mpz_ptr y_out,
     mpz_t lambda, nu;
 #endif
 
-    if(mpz_cmp_ui(y_in, 0) == 0)
+    if(mpz_cmp_ui(p_in->y, 0) == 0)
     {
         // set the output point as infinity
         return 0;
@@ -98,31 +98,31 @@ int elliptic_double(mpz_ptr x_out, mpz_ptr y_out,
     mpz_inits(lambda, nu, NULL);
 #endif
 
-    mpz_add(aux1, y_in, y_in);
+    mpz_add(aux1, p_in->y, p_in->y);
     err = mpz_invert(aux2, aux1, ctx->m);
     if(err == 0)
     {
-        mpz_gcd(x_out, aux1, ctx->m);
+        mpz_gcd(p_out->x, aux1, ctx->m);
         goto clean;
     }
 
-    mpz_mul(aux1, x_in, x_in);
+    mpz_mul(aux1, p_in->x, p_in->x);
     mpz_mul_ui(aux1, aux1, 3);
     mpz_add(aux1, aux1, ctx->A);
     mpz_mul(lambda, aux1, aux2);    /* lambda = (3x + a) / 2y */
 
-    mpz_mul(aux1, x_in, lambda);
-    mpz_sub(nu, y_in, aux1);        /* nu = y - lambda * x */
+    mpz_mul(aux1, p_in->x, lambda);
+    mpz_sub(nu, p_in->y, aux1);        /* nu = y - lambda * x */
 
     mpz_mul(aux1, lambda, lambda);
-    mpz_submul_ui(aux1, x_in, 2);
-    mpz_swap(x_out, aux1);          /* x' = lambda^2 - 2x */
+    mpz_submul_ui(aux1, p_in->x, 2);
+    mpz_swap(p_out->x, aux1);          /* x' = lambda^2 - 2x */
 
-    mpz_neg(y_out, nu);
-    mpz_submul(y_out, x_out, lambda);   /* y' = -(lambda * x' + nu) */
+    mpz_neg(p_out->y, nu);
+    mpz_submul(p_out->y, p_out->x, lambda);   /* y' = -(lambda * x' + nu) */
 
-    mpz_mod(x_out, x_out, ctx->m);
-    mpz_mod(y_out, y_out, ctx->m);
+    mpz_mod(p_out->x, p_out->x, ctx->m);
+    mpz_mod(p_out->y, p_out->y, ctx->m);
 clean:
 #if !FAT_OBJECTS
     mpz_clears(aux1, aux2, lambda, nu, NULL);
@@ -131,30 +131,30 @@ clean:
     return !err;
 }
 
-int elliptic_mul(mpz_ptr x_out, mpz_ptr y_out,
-        mpz_ptr x_in, mpz_ptr y_in,
+int elliptic_mul(elliptic_point *p_out,
+        elliptic_point *p_in,
         unsigned int times,
         elliptic_ctx *ctx)
 {
     int err;
-    mpz_t aux1, aux2;
-    mpz_inits(aux1, aux2, NULL);
+    elliptic_point point;
+    mpz_inits(point.x, point.y, NULL);
 
-    mpz_set(aux1, x_in);
-    mpz_set(aux2, y_in);
+    mpz_set(point.x, p_in->x);
+    mpz_set(point.y, p_in->y);
 
     while(times % 2 == 0)
     {
-        err = elliptic_double(aux1, aux2, aux1, aux2, ctx);
+        err = elliptic_double(&point, &point, ctx);
         times >>= 1;
 
         if(err != 0) goto found;
     }
 
-    mpz_set(x_out, aux1);
-    mpz_set(y_out, aux2);
+    mpz_set(p_out->x, point.x);
+    mpz_set(p_out->y, point.y);
 
-    err = elliptic_double(aux1, aux2, aux1, aux2, ctx);
+    err = elliptic_double(&point, &point, ctx);
     times >>= 1;
 
     if(err != 0) goto found;
@@ -163,21 +163,21 @@ int elliptic_mul(mpz_ptr x_out, mpz_ptr y_out,
     {
         if(times & 1)
         {
-            err = elliptic_sum(x_out, y_out, x_out, y_out,
-                    aux1, aux2, ctx);
+            err = elliptic_sum(p_out, p_out,
+                    &point, ctx);
             if(err != 0) goto clean;
         }
 
-        err = elliptic_double(aux1, aux2, aux1, aux2, ctx);
+        err = elliptic_double(&point, &point, ctx);
         times >>= 1;
         if(err != 0) goto found;
     }
 
 clean:
-    mpz_clears(aux1, aux2, NULL);
+    mpz_clears(point.x, point.y, NULL);
     return err;
 
 found:
-    mpz_set(x_out, aux1);
+    mpz_set(p_out->x, point.x);
     goto clean;
 }
