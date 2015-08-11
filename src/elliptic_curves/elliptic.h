@@ -3,6 +3,11 @@
 
 #include <gmp.h>
 
+typedef enum
+{
+    ELLIPTIC_CURVE_WEIERSTRASS
+} elliptic_curve_type;
+
 typedef struct
 {
     mpz_t A, B;
@@ -12,7 +17,22 @@ typedef struct
     mpz_t aux1, aux2;
     mpz_t lambda, nu;
 #endif
+
+    elliptic_curve_type type;
 } elliptic_ctx;
+
+typedef enum
+{
+    POINT_AFFINE,
+    POINT_PROJECTIVE
+} point_type;
+
+typedef struct
+{
+    mpz_t x, y, z;
+
+    point_type type;
+} elliptic_point;
 
 void static inline elliptic_init(elliptic_ctx *ctx)
 {
