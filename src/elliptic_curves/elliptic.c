@@ -5,7 +5,7 @@
 int elliptic_sum(elliptic_point *p_out,
         elliptic_point *p_in1,
         elliptic_point *p_in2,
-        elliptic_ctx *ctx)
+        elliptic_context *ctx)
 {
     int err;
 
@@ -73,7 +73,7 @@ clean:
 
 int elliptic_double(elliptic_point *p_out,
         elliptic_point *p_in,
-        elliptic_ctx *ctx)
+        elliptic_context *ctx)
 {
     int err;
 
@@ -134,7 +134,7 @@ clean:
 int elliptic_mul(elliptic_point *p_out,
         elliptic_point *p_in,
         unsigned int times,
-        elliptic_ctx *ctx)
+        elliptic_context *ctx)
 {
     int err;
     elliptic_point point;

@@ -5,7 +5,7 @@
 
 int main(int argc, const char *argv[])
 {
-    elliptic_ctx ctx;
+    elliptic_context ctx;
     elliptic_point point;
 
     if(argc != 6)

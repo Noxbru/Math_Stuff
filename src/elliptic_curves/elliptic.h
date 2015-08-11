@@ -20,7 +20,7 @@ typedef struct
 #endif
 
     elliptic_curve_type type;
-} elliptic_ctx;
+} elliptic_context;
 
 typedef enum
 {
@@ -36,7 +36,7 @@ typedef struct
     point_type type;
 } elliptic_point;
 
-void static inline elliptic_init(elliptic_ctx *ctx)
+void static inline elliptic_init(elliptic_context *ctx)
 {
     mpz_inits(ctx->A, ctx->B, ctx->m, NULL);
 #if FAT_OBJECTS
@@ -45,7 +45,7 @@ void static inline elliptic_init(elliptic_ctx *ctx)
     ctx->type = ELLIPTIC_CURVE_NULL;
 }
 
-void static inline elliptic_init_set(elliptic_ctx *ctx,
+void static inline elliptic_init_set(elliptic_context *ctx,
         mpz_ptr A, mpz_ptr B, mpz_ptr m)
 {
     mpz_init_set(ctx->A, A);
@@ -59,7 +59,7 @@ void static inline elliptic_init_set(elliptic_ctx *ctx,
     ctx->type = ELLIPTIC_CURVE_NULL;
 }
 
-void static inline elliptic_clear(elliptic_ctx *ctx)
+void static inline elliptic_clear(elliptic_context *ctx)
 {
     mpz_clears(ctx->A, ctx->B, ctx->m, NULL);
 #if FAT_OBJECTS
@@ -190,15 +190,15 @@ void static inline elliptic_point_clear(elliptic_point *point)
 int elliptic_sum(elliptic_point *p_out,
         elliptic_point *p_in1,
         elliptic_point *p_in2,
-        elliptic_ctx *ctx);
+        elliptic_context *ctx);
 
 int elliptic_double(elliptic_point *p_out,
         elliptic_point *p_in,
-        elliptic_ctx *ctx);
+        elliptic_context *ctx);
 
 int elliptic_mul(elliptic_point *p_out,
         elliptic_point *p_in,
         unsigned int times,
-        elliptic_ctx *ctx);
+        elliptic_context *ctx);
 
 #endif /* end of include guard: ELLIPTIC_H */

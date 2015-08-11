@@ -9,7 +9,7 @@ void elliptic(mpz_ptr out, mpz_ptr n)
 {
     unsigned int i;
     int a;
-    elliptic_ctx e_ctx;
+    elliptic_context e_ctx;
     elliptic_point point;
 
     /*

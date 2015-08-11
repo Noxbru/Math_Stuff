@@ -6,7 +6,7 @@
 int main(int argc, const char *argv[])
 {
     unsigned int times;
-    elliptic_ctx ctx;
+    elliptic_context ctx;
     elliptic_point point;
 
     if(argc != 7)
