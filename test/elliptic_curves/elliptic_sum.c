@@ -22,6 +22,10 @@ int main(int argc, const char *argv[])
     mpz_init_set_str(point1.y, argv[5], 0);
     mpz_init_set_str(point2.x, argv[6], 0);
     mpz_init_set_str(point2.y, argv[7], 0);
+    mpz_init(point1.z);
+    mpz_init(point2.z);
+    point1.type = POINT_AFFINE;
+    point2.type = POINT_AFFINE;
 
     elliptic_sum(&point1, &point1, &point2, &ctx);
 

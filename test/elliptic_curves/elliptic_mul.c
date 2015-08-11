@@ -20,7 +20,9 @@ int main(int argc, const char *argv[])
 
     mpz_init_set_str(point.x, argv[4], 0);
     mpz_init_set_str(point.y, argv[5], 0);
+    mpz_init(point.z);
     sscanf(argv[6],"%u",&times);
+    point.type = POINT_AFFINE;
 
     elliptic_mul(&point, &point, times, &ctx);
 

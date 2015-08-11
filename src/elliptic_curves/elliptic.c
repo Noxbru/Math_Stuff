@@ -138,10 +138,7 @@ int elliptic_mul(elliptic_point *p_out,
 {
     int err;
     elliptic_point point;
-    mpz_inits(point.x, point.y, NULL);
-
-    mpz_set(point.x, p_in->x);
-    mpz_set(point.y, p_in->y);
+    elliptic_point_init_set(&point, p_in);
 
     while(times % 2 == 0)
     {
@@ -151,8 +148,7 @@ int elliptic_mul(elliptic_point *p_out,
         if(err != 0) goto found;
     }
 
-    mpz_set(p_out->x, point.x);
-    mpz_set(p_out->y, point.y);
+    elliptic_point_set(p_out, &point);
 
     err = elliptic_double(&point, &point, ctx);
     times >>= 1;
@@ -174,7 +170,7 @@ int elliptic_mul(elliptic_point *p_out,
     }
 
 clean:
-    mpz_clears(point.x, point.y, NULL);
+    elliptic_point_clear(&point);
     return err;
 
 found:

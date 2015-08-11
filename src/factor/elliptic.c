@@ -34,15 +34,14 @@ void elliptic(mpz_ptr out, mpz_ptr n)
         { 46, 280,  -387, -1134}   // (5, 7, 8)
     };
 
-    mpz_inits(point.x, point.y, NULL);
+    elliptic_point_init(&point);
     elliptic_init(&e_ctx);
     mpz_set(e_ctx.m, n);
     generate_primes_table(20000);
 
     for(a = 0; a < 11; a++)
     {
-        mpz_set_ui(point.x, coeffs[a][0]);
-        mpz_set_ui(point.y, coeffs[a][1]);
+        elliptic_point_set_si_affine(&point, coeffs[a][0], coeffs[a][1]);
         mpz_set_si(e_ctx.A, coeffs[a][2]);
         mpz_set_si(e_ctx.B, coeffs[a][3]);
 
@@ -57,7 +56,7 @@ void elliptic(mpz_ptr out, mpz_ptr n)
     }
 
 clean:
-    mpz_clears(point.x, point.y, NULL);
+    elliptic_point_clear(&point);
     elliptic_clear(&e_ctx);
     return;
 }

@@ -19,6 +19,8 @@ int main(int argc, const char *argv[])
 
     mpz_init_set_str(point.x, argv[4], 0);
     mpz_init_set_str(point.y, argv[5], 0);
+    mpz_init(point.z);
+    point.type = POINT_AFFINE;
 
     elliptic_double(&point, &point, &ctx);
 
