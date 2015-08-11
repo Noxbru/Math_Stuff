@@ -12,21 +12,43 @@ void elliptic(mpz_ptr out, mpz_ptr n)
     elliptic_ctx e_ctx;
     mpz_t x, y;
 
+    /*
+     * Numbers obtained by having 3 numbers (n1..n3)
+     * and its three squares (s1..s3) and doing:
+     *  x1 = (s1 + s2 + s3) / 3
+     *  y1 = n1 * n2 * n3
+     *  y^2 = (x + s1 - x1) * (x + s2 - x1) * (x + s3 - x1)
+     */
+    static int coeffs[][4] =
+    {
+        { 15,  40,   111,  -110},  // (2, 4, 5)
+        { 23,  56,   543,  3458},  // (2, 4, 7)
+        { 28,  64, -1008, 10368},  // (2, 4, 8)
+        { 26,  70,  -507,   506},  // (2, 5, 7)
+        { 31,  80,  -927,  5346},  // (2, 5, 8)
+        { 39, 112,  -975, -8750},  // (2, 7, 8)
+        { 42, 162, -1323,  7722},  // (3, 6, 9)
+        { 30, 140,  -291,  1330},  // (4, 5, 7)
+        { 35, 160,  -651,  5510},  // (4, 5, 8)
+        { 43, 224,  -603, -3402},  // (4, 7, 8)
+        { 46, 280,  -387, -1134}   // (5, 7, 8)
+    };
+
     mpz_inits(x, y, NULL);
     elliptic_init(&e_ctx);
     mpz_set(e_ctx.m, n);
     generate_primes_table(20000);
 
-    for(a = 2; a < 8; a++)
+    for(a = 0; a < 11; a++)
     {
-        mpz_set_ui(x, 1);
-        mpz_set_ui(y, 1);
-        mpz_set_ui(e_ctx.A, a);
-        mpz_set_si(e_ctx.B, -a);
+        mpz_set_ui(x, coeffs[a][0]);
+        mpz_set_ui(y, coeffs[a][1]);
+        mpz_set_si(e_ctx.A, coeffs[a][2]);
+        mpz_set_si(e_ctx.B, coeffs[a][3]);
 
         for(i = 1; i < 20000; i++)
         {
-            if(elliptic_mul(x, y, x, y, i, &e_ctx))
+            if(elliptic_mul(x, y, x, y, get_prime(i), &e_ctx))
             {
                 mpz_set(out, x);
                 goto clean;
