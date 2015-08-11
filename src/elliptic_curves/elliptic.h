@@ -5,7 +5,8 @@
 
 typedef enum
 {
-    ELLIPTIC_CURVE_WEIERSTRASS
+    ELLIPTIC_CURVE_WEIERSTRASS,
+    ELLIPTIC_CURVE_NULL
 } elliptic_curve_type;
 
 typedef struct
@@ -41,6 +42,7 @@ void static inline elliptic_init(elliptic_ctx *ctx)
 #if FAT_OBJECTS
     mpz_inits(ctx->aux1, ctx->aux2, ctx->lambda, ctx->nu, NULL);
 #endif
+    ctx->type = ELLIPTIC_CURVE_NULL;
 }
 
 void static inline elliptic_init_set(elliptic_ctx *ctx,
@@ -53,6 +55,8 @@ void static inline elliptic_init_set(elliptic_ctx *ctx,
 #if FAT_OBJECTS
     mpz_inits(ctx->aux1, ctx->aux2, ctx->lambda, ctx->nu, NULL);
 #endif
+
+    ctx->type = ELLIPTIC_CURVE_NULL;
 }
 
 void static inline elliptic_clear(elliptic_ctx *ctx)
@@ -61,6 +65,7 @@ void static inline elliptic_clear(elliptic_ctx *ctx)
 #if FAT_OBJECTS
     mpz_clears(ctx->aux1, ctx->aux2, ctx->lambda, ctx->nu, NULL);
 #endif
+    ctx->type = ELLIPTIC_CURVE_NULL;
 }
 
 
