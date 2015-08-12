@@ -3,7 +3,7 @@
 
 #include <gmp.h>
 
-/* Elliptic points */
+/* Elliptic points >>> */
 typedef enum
 {
     POINT_AFFINE,
@@ -136,7 +136,9 @@ void static inline elliptic_point_clear(elliptic_point *point)
     point->type = POINT_NULL;
 }
 
-/* Elliptic Curves */
+/* <<< */
+
+/* Elliptic Curves >>> */
 typedef enum
 {
     ELLIPTIC_CURVE_WEIERSTRASS,
@@ -201,5 +203,7 @@ int elliptic_curve_mul(elliptic_point *p_out,
         elliptic_point *p_in,
         unsigned int times,
         elliptic_context *ctx);
+
+/* <<< */
 
 #endif /* end of include guard: ELLIPTIC_H */
