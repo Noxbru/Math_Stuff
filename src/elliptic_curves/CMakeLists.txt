@@ -1,5 +1,5 @@
 add_library(elliptic
-    elliptic.c)
+    elliptic_curve_weierstrass_affine.c)
 
 target_include_directories(elliptic PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 

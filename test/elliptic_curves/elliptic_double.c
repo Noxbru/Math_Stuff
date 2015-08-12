@@ -16,6 +16,7 @@ int main(int argc, const char *argv[])
     mpz_set_str(ctx.A, argv[1], 0);
     mpz_set_str(ctx.B, argv[2], 0);
     mpz_set_str(ctx.m, argv[3], 0);
+    ctx.type = ELLIPTIC_CURVE_WEIERSTRASS;
 
     mpz_init_set_str(point.x, argv[4], 0);
     mpz_init_set_str(point.y, argv[5], 0);

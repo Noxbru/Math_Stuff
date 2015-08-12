@@ -37,6 +37,7 @@ void elliptic(mpz_ptr out, mpz_ptr n)
     elliptic_point_init(&point);
     elliptic_curve_init(&e_ctx);
     mpz_set(e_ctx.m, n);
+    e_ctx.type = ELLIPTIC_CURVE_WEIERSTRASS;
     generate_primes_table(20000);
 
     for(a = 0; a < 11; a++)
