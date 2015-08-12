@@ -3,25 +3,7 @@
 
 #include <gmp.h>
 
-typedef enum
-{
-    ELLIPTIC_CURVE_WEIERSTRASS,
-    ELLIPTIC_CURVE_NULL
-} elliptic_curve_type;
-
-typedef struct
-{
-    mpz_t A, B;
-    mpz_t m;
-
-#if FAT_OBJECTS
-    mpz_t aux1, aux2;
-    mpz_t lambda, nu;
-#endif
-
-    elliptic_curve_type type;
-} elliptic_context;
-
+/* Elliptic points */
 typedef enum
 {
     POINT_AFFINE,
@@ -35,39 +17,6 @@ typedef struct
 
     point_type type;
 } elliptic_point;
-
-void static inline elliptic_curve_init(elliptic_context *ctx)
-{
-    mpz_inits(ctx->A, ctx->B, ctx->m, NULL);
-#if FAT_OBJECTS
-    mpz_inits(ctx->aux1, ctx->aux2, ctx->lambda, ctx->nu, NULL);
-#endif
-    ctx->type = ELLIPTIC_CURVE_NULL;
-}
-
-void static inline elliptic_curve_init_set(elliptic_context *ctx,
-        mpz_ptr A, mpz_ptr B, mpz_ptr m)
-{
-    mpz_init_set(ctx->A, A);
-    mpz_init_set(ctx->B, B);
-    mpz_init_set(ctx->m, m);
-
-#if FAT_OBJECTS
-    mpz_inits(ctx->aux1, ctx->aux2, ctx->lambda, ctx->nu, NULL);
-#endif
-
-    ctx->type = ELLIPTIC_CURVE_NULL;
-}
-
-void static inline elliptic_curve_clear(elliptic_context *ctx)
-{
-    mpz_clears(ctx->A, ctx->B, ctx->m, NULL);
-#if FAT_OBJECTS
-    mpz_clears(ctx->aux1, ctx->aux2, ctx->lambda, ctx->nu, NULL);
-#endif
-    ctx->type = ELLIPTIC_CURVE_NULL;
-}
-
 
 void static inline elliptic_point_init(elliptic_point *point)
 {
@@ -185,6 +134,58 @@ void static inline elliptic_point_clear(elliptic_point *point)
 {
     mpz_clears(point->x, point->y, point->z, NULL);
     point->type = POINT_NULL;
+}
+
+/* Elliptic Curves */
+typedef enum
+{
+    ELLIPTIC_CURVE_WEIERSTRASS,
+    ELLIPTIC_CURVE_NULL
+} elliptic_curve_type;
+
+typedef struct
+{
+    mpz_t A, B;
+    mpz_t m;
+
+#if FAT_OBJECTS
+    mpz_t aux1, aux2;
+    mpz_t lambda, nu;
+#endif
+
+    elliptic_curve_type type;
+} elliptic_context;
+
+void static inline elliptic_curve_init(elliptic_context *ctx)
+{
+    mpz_inits(ctx->A, ctx->B, ctx->m, NULL);
+#if FAT_OBJECTS
+    mpz_inits(ctx->aux1, ctx->aux2, ctx->lambda, ctx->nu, NULL);
+#endif
+    ctx->type = ELLIPTIC_CURVE_NULL;
+}
+
+void static inline elliptic_curve_init_set(elliptic_context *ctx,
+        mpz_ptr A, mpz_ptr B, mpz_ptr m)
+{
+    mpz_init_set(ctx->A, A);
+    mpz_init_set(ctx->B, B);
+    mpz_init_set(ctx->m, m);
+
+#if FAT_OBJECTS
+    mpz_inits(ctx->aux1, ctx->aux2, ctx->lambda, ctx->nu, NULL);
+#endif
+
+    ctx->type = ELLIPTIC_CURVE_NULL;
+}
+
+void static inline elliptic_curve_clear(elliptic_context *ctx)
+{
+    mpz_clears(ctx->A, ctx->B, ctx->m, NULL);
+#if FAT_OBJECTS
+    mpz_clears(ctx->aux1, ctx->aux2, ctx->lambda, ctx->nu, NULL);
+#endif
+    ctx->type = ELLIPTIC_CURVE_NULL;
 }
 
 int elliptic_curve_sum(elliptic_point *p_out,
