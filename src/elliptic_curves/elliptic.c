@@ -2,7 +2,7 @@
 
 #include "elliptic.h"
 
-int elliptic_sum(elliptic_point *p_out,
+int elliptic_curve_sum(elliptic_point *p_out,
         elliptic_point *p_in1,
         elliptic_point *p_in2,
         elliptic_context *ctx)
@@ -13,7 +13,7 @@ int elliptic_sum(elliptic_point *p_out,
     {
         if(mpz_cmp(p_in1->y, p_in2->y) == 0)
         {
-            return elliptic_double(p_out, p_in1, ctx);
+            return elliptic_curve_double(p_out, p_in1, ctx);
         }
         else
         {
@@ -71,7 +71,7 @@ clean:
     return !err;
 }
 
-int elliptic_double(elliptic_point *p_out,
+int elliptic_curve_double(elliptic_point *p_out,
         elliptic_point *p_in,
         elliptic_context *ctx)
 {
@@ -131,7 +131,7 @@ clean:
     return !err;
 }
 
-int elliptic_mul(elliptic_point *p_out,
+int elliptic_curve_mul(elliptic_point *p_out,
         elliptic_point *p_in,
         unsigned int times,
         elliptic_context *ctx)
@@ -142,7 +142,7 @@ int elliptic_mul(elliptic_point *p_out,
 
     while(times % 2 == 0)
     {
-        err = elliptic_double(&point, &point, ctx);
+        err = elliptic_curve_double(&point, &point, ctx);
         times >>= 1;
 
         if(err != 0) goto found;
@@ -150,7 +150,7 @@ int elliptic_mul(elliptic_point *p_out,
 
     elliptic_point_set(p_out, &point);
 
-    err = elliptic_double(&point, &point, ctx);
+    err = elliptic_curve_double(&point, &point, ctx);
     times >>= 1;
 
     if(err != 0) goto found;
@@ -159,12 +159,12 @@ int elliptic_mul(elliptic_point *p_out,
     {
         if(times & 1)
         {
-            err = elliptic_sum(p_out, p_out,
+            err = elliptic_curve_sum(p_out, p_out,
                     &point, ctx);
             if(err != 0) goto clean;
         }
 
-        err = elliptic_double(&point, &point, ctx);
+        err = elliptic_curve_double(&point, &point, ctx);
         times >>= 1;
         if(err != 0) goto found;
     }

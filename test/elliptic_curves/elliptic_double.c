@@ -11,7 +11,7 @@ int main(int argc, const char *argv[])
     if(argc != 6)
         return 1;
 
-    elliptic_init(&ctx);
+    elliptic_curve_init(&ctx);
 
     mpz_set_str(ctx.A, argv[1], 0);
     mpz_set_str(ctx.B, argv[2], 0);
@@ -22,7 +22,7 @@ int main(int argc, const char *argv[])
     mpz_init(point.z);
     point.type = POINT_AFFINE;
 
-    elliptic_double(&point, &point, &ctx);
+    elliptic_curve_double(&point, &point, &ctx);
 
     gmp_printf("%Zd\t%Zd\n", point.x, point.y);
 

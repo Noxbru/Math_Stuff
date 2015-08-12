@@ -12,7 +12,7 @@ int main(int argc, const char *argv[])
     if(argc != 8)
         return 1;
 
-    elliptic_init(&ctx);
+    elliptic_curve_init(&ctx);
 
     mpz_set_str(ctx.A, argv[1], 0);
     mpz_set_str(ctx.B, argv[2], 0);
@@ -27,7 +27,7 @@ int main(int argc, const char *argv[])
     point1.type = POINT_AFFINE;
     point2.type = POINT_AFFINE;
 
-    elliptic_sum(&point1, &point1, &point2, &ctx);
+    elliptic_curve_sum(&point1, &point1, &point2, &ctx);
 
     gmp_printf("%Zd\t%Zd\n", point1.x, point1.y);
 

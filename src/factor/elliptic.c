@@ -35,7 +35,7 @@ void elliptic(mpz_ptr out, mpz_ptr n)
     };
 
     elliptic_point_init(&point);
-    elliptic_init(&e_ctx);
+    elliptic_curve_init(&e_ctx);
     mpz_set(e_ctx.m, n);
     generate_primes_table(20000);
 
@@ -47,7 +47,7 @@ void elliptic(mpz_ptr out, mpz_ptr n)
 
         for(i = 1; i < 20000; i++)
         {
-            if(elliptic_mul(&point, &point, get_prime(i), &e_ctx))
+            if(elliptic_curve_mul(&point, &point, get_prime(i), &e_ctx))
             {
                 mpz_set(out, point.x);
                 goto clean;
@@ -57,6 +57,6 @@ void elliptic(mpz_ptr out, mpz_ptr n)
 
 clean:
     elliptic_point_clear(&point);
-    elliptic_clear(&e_ctx);
+    elliptic_curve_clear(&e_ctx);
     return;
 }
