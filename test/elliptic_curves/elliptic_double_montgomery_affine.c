@@ -23,7 +23,7 @@ int main(int argc, const char *argv[])
     mpz_init(point.z);
     point.type = POINT_AFFINE;
 
-    elliptic_curve_double_montgomery_affine(&point, &point, &ctx);
+    elliptic_curve_double(&point, &point, &ctx);
 
     gmp_printf("%Zd\t%Zd\n", point.x, point.y);
 

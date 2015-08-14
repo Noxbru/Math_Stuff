@@ -25,7 +25,7 @@ int main(int argc, const char *argv[])
     sscanf(argv[6],"%u",&times);
     point.type = POINT_AFFINE;
 
-    elliptic_curve_mul_montgomery_affine(&point, &point, times, &ctx);
+    elliptic_curve_mul(&point, &point, times, &ctx);
 
     gmp_printf("%Zd\t%Zd\n", point.x, point.y);
 

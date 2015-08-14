@@ -28,7 +28,7 @@ int main(int argc, const char *argv[])
     point1.type = POINT_AFFINE;
     point2.type = POINT_AFFINE;
 
-    elliptic_curve_sum_montgomery_affine(&point1, &point1, &point2, &ctx);
+    elliptic_curve_sum(&point1, &point1, &point2, &ctx);
 
     gmp_printf("%Zd\t%Zd\n", point1.x, point1.y);
 
