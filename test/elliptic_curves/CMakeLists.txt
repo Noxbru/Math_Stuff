@@ -32,6 +32,10 @@ prepare_executable(elliptic_sum elliptic_sum.c)
 prepare_executable(elliptic_double elliptic_double.c)
 prepare_executable(elliptic_mul elliptic_mul.c)
 
+prepare_executable(elliptic_sum_montgomery_affine    elliptic_sum_montgomery_affine.c)
+prepare_executable(elliptic_double_montgomery_affine elliptic_double_montgomery_affine.c)
+prepare_executable(elliptic_mul_montgomery_affine    elliptic_mul_montgomery_affine.c)
+
 set(curve1 5 -5 65537)
 set(curve1_point1     1     1)
 set(curve1_point2    14 65484) # 2 * (1,1)
@@ -60,3 +64,32 @@ do_test_curve_mul(curve_mul2 elliptic_mul ${curve1}
     ${curve1_point1} 5 ${curve1_point5})
 do_test_curve_mul(curve_mul3 elliptic_mul ${curve1}
     ${curve1_point2} 3 ${curve1_point6})
+
+set(mont_curve1 5 3 65537)
+set(mont_curve1_point1      3     5)
+set(mont_curve1_point2   6117  1282) # 2 * (3,5)
+set(mont_curve1_point3  54943 58216) # 3 * (3,5)
+set(mont_curve1_point4  62979 59844) # 4 * (3,5)
+set(mont_curve1_point5  23228 18695) # 5 * (3,5)
+set(mont_curve1_point6  12508 22665) # 6 * (3,5)
+
+do_test_curve_sum(elliptic_curve_montgomery_sum1 elliptic_sum_montgomery_affine ${mont_curve1}
+    ${mont_curve1_point1} ${mont_curve1_point1} ${mont_curve1_point2})
+do_test_curve_sum(elliptic_curve_montgomery_sum2 elliptic_sum_montgomery_affine ${mont_curve1}
+    ${mont_curve1_point1} ${mont_curve1_point2} ${mont_curve1_point3})
+do_test_curve_sum(elliptic_curve_montgomery_sum3 elliptic_sum_montgomery_affine ${mont_curve1}
+    ${mont_curve1_point1} ${mont_curve1_point3} ${mont_curve1_point4})
+do_test_curve_sum(elliptic_curve_montgomery_sum4 elliptic_sum_montgomery_affine ${mont_curve1}
+    ${mont_curve1_point2} ${mont_curve1_point3} ${mont_curve1_point5})
+
+do_test_curve_double(elliptic_curve_montgomery_double1 elliptic_double_montgomery_affine ${mont_curve1}
+    ${mont_curve1_point1} ${mont_curve1_point2})
+do_test_curve_double(elliptic_curve_montgomery_double2 elliptic_double_montgomery_affine ${mont_curve1}
+    ${mont_curve1_point2} ${mont_curve1_point4})
+
+do_test_curve_mul(elliptic_curve_montgomery_mul1 elliptic_mul_montgomery_affine ${mont_curve1}
+    ${mont_curve1_point1} 3 ${mont_curve1_point3})
+do_test_curve_mul(elliptic_curve_montgomery_mul2 elliptic_mul_montgomery_affine ${mont_curve1}
+    ${mont_curve1_point1} 5 ${mont_curve1_point5})
+do_test_curve_mul(elliptic_curve_montgomery_mul3 elliptic_mul_montgomery_affine ${mont_curve1}
+    ${mont_curve1_point2} 3 ${mont_curve1_point6})
