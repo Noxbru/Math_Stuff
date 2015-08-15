@@ -28,42 +28,42 @@ macro(do_test_curve_mul test_name test_executable
         PROPERTIES PASS_REGULAR_EXPRESSION "${r_x}\t${r_y}")
 endmacro(do_test_curve_mul)
 
-prepare_executable(elliptic_sum elliptic_sum.c)
-prepare_executable(elliptic_double elliptic_double.c)
-prepare_executable(elliptic_mul elliptic_mul.c)
+prepare_executable(elliptic_sum_weierstrass_affine    elliptic_sum_weierstrass_affine.c)
+prepare_executable(elliptic_double_weierstrass_affine elliptic_double_weierstrass_affine.c)
+prepare_executable(elliptic_mul_weierstrass_affine    elliptic_mul_weierstrass_affine.c)
 
 prepare_executable(elliptic_sum_montgomery_affine    elliptic_sum_montgomery_affine.c)
 prepare_executable(elliptic_double_montgomery_affine elliptic_double_montgomery_affine.c)
 prepare_executable(elliptic_mul_montgomery_affine    elliptic_mul_montgomery_affine.c)
 
-set(curve1 5 -5 65537)
-set(curve1_point1     1     1)
-set(curve1_point2    14 65484) # 2 * (1,1)
-set(curve1_point3 24821 62767) # 3 * (1,1)
-set(curve1_point4 42740 22681) # 4 * (1,1)
-set(curve1_point5 50687 11143) # 5 * (1,1)
-set(curve1_point6 45879 59979) # 6 * (1,1)
+set(weir_curve1 5 -5 65537)
+set(weir_curve1_point1     1     1)
+set(weir_curve1_point2    14 65484) # 2 * (1,1)
+set(weir_curve1_point3 24821 62767) # 3 * (1,1)
+set(weir_curve1_point4 42740 22681) # 4 * (1,1)
+set(weir_curve1_point5 50687 11143) # 5 * (1,1)
+set(weir_curve1_point6 45879 59979) # 6 * (1,1)
 
-do_test_curve_sum(curve_sum1 elliptic_sum ${curve1}
-    ${curve1_point1} ${curve1_point1} ${curve1_point2})
-do_test_curve_sum(curve_sum2 elliptic_sum ${curve1}
-    ${curve1_point1} ${curve1_point2} ${curve1_point3})
-do_test_curve_sum(curve_sum3 elliptic_sum ${curve1}
-    ${curve1_point1} ${curve1_point3} ${curve1_point4})
-do_test_curve_sum(curve_sum4 elliptic_sum ${curve1}
-    ${curve1_point2} ${curve1_point3} ${curve1_point5})
+do_test_curve_sum(elliptic_curve_weierstrass_sum1 elliptic_sum_weierstrass_affine
+    ${weir_curve1} ${weir_curve1_point1} ${weir_curve1_point1} ${weir_curve1_point2})
+do_test_curve_sum(elliptic_curve_weierstrass_sum2 elliptic_sum_weierstrass_affine
+    ${weir_curve1} ${weir_curve1_point1} ${weir_curve1_point2} ${weir_curve1_point3})
+do_test_curve_sum(elliptic_curve_weierstrass_sum3 elliptic_sum_weierstrass_affine
+    ${weir_curve1} ${weir_curve1_point1} ${weir_curve1_point3} ${weir_curve1_point4})
+do_test_curve_sum(elliptic_curve_weierstrass_sum4 elliptic_sum_weierstrass_affine
+    ${weir_curve1} ${weir_curve1_point2} ${weir_curve1_point3} ${weir_curve1_point5})
 
-do_test_curve_double(curve_double1 elliptic_double ${curve1}
-    ${curve1_point1} ${curve1_point2})
-do_test_curve_double(curve_double2 elliptic_double ${curve1}
-    ${curve1_point2} ${curve1_point4})
+do_test_curve_double(elliptic_curve_weierstrass_double1 elliptic_double_weierstrass_affine
+    ${weir_curve1} ${weir_curve1_point1} ${weir_curve1_point2})
+do_test_curve_double(elliptic_curve_weierstrass_double2 elliptic_double_weierstrass_affine
+    ${weir_curve1} ${weir_curve1_point2} ${weir_curve1_point4})
 
-do_test_curve_mul(curve_mul1 elliptic_mul ${curve1}
-    ${curve1_point1} 3 ${curve1_point3})
-do_test_curve_mul(curve_mul2 elliptic_mul ${curve1}
-    ${curve1_point1} 5 ${curve1_point5})
-do_test_curve_mul(curve_mul3 elliptic_mul ${curve1}
-    ${curve1_point2} 3 ${curve1_point6})
+do_test_curve_mul(elliptic_curve_weierstrass_mul1 elliptic_mul_weierstrass_affine
+    ${weir_curve1} ${weir_curve1_point1} 3 ${weir_curve1_point3})
+do_test_curve_mul(elliptic_curve_weierstrass_mul2 elliptic_mul_weierstrass_affine
+    ${weir_curve1} ${weir_curve1_point1} 5 ${weir_curve1_point5})
+do_test_curve_mul(elliptic_curve_weierstrass_mul3 elliptic_mul_weierstrass_affine
+    ${weir_curve1} ${weir_curve1_point2} 3 ${weir_curve1_point6})
 
 set(mont_curve1 5 3 65537)
 set(mont_curve1_point1      3     5)
