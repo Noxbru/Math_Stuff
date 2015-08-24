@@ -53,12 +53,11 @@ int elliptic_curve_sum_weierstrass_affine(elliptic_point *p_out,
         mpz_mul(aux1, lambda, lambda);
         mpz_sub(aux1, aux1, p_in1->x);
         mpz_sub(aux1, aux1, p_in2->x);
-        mpz_swap(p_out->x, aux1);          /* x' = lambda^2 - x1 - x2 */
+        mpz_mod(p_out->x, aux1, ctx->m);    /* x' = lambda^2 - x1 - x2 */
 
         mpz_neg(p_out->y, nu);
         mpz_submul(p_out->y, p_out->x, lambda);   /* y' = -(lambda * x' + nu) */
 
-        mpz_mod(p_out->x, p_out->x, ctx->m);
         mpz_mod(p_out->y, p_out->y, ctx->m);
 
 clean:
@@ -116,13 +115,13 @@ int elliptic_curve_double_weierstrass_affine(elliptic_point *p_out,
 
     mpz_mul(aux1, lambda, lambda);
     mpz_submul_ui(aux1, p_in->x, 2);
-    mpz_swap(p_out->x, aux1);          /* x' = lambda^2 - 2x */
+    mpz_mod(p_out->x, aux1, ctx->m);    /* x' = lambda^2 - 2x */
 
     mpz_neg(p_out->y, nu);
     mpz_submul(p_out->y, p_out->x, lambda);   /* y' = -(lambda * x' + nu) */
 
-    mpz_mod(p_out->x, p_out->x, ctx->m);
     mpz_mod(p_out->y, p_out->y, ctx->m);
+
 clean:
 #if !FAT_OBJECTS
     mpz_clears(aux1, aux2, lambda, nu, NULL);

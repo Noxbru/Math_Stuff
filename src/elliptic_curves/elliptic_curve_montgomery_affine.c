@@ -55,12 +55,11 @@ int elliptic_curve_sum_montgomery_affine(elliptic_point *p_out,
         mpz_sub(aux2, aux2, ctx->A);
         mpz_sub(aux2, aux2, p_in1->x);
         mpz_sub(aux2, aux2, p_in2->x);
-        mpz_swap(p_out->x, aux2);               /* x' = B * lambda^2 - A - x1 - x2 */
+        mpz_mod(p_out->x, aux2, ctx->m);        /* x' = B * lambda^2 - A - x1 - x2 */
 
         mpz_neg(p_out->y, nu);
         mpz_submul(p_out->y, p_out->x, lambda); /* y' = -(lambda * x' + nu) */
 
-        mpz_mod(p_out->x, p_out->x, ctx->m);
         mpz_mod(p_out->y, p_out->y, ctx->m);
 
 clean:
@@ -123,12 +122,11 @@ int elliptic_curve_double_montgomery_affine(elliptic_point *p_out,
     mpz_mul(aux2, aux1, ctx->B);
     mpz_sub(aux2, aux2, ctx->A);
     mpz_submul_ui(aux2, p_in->x, 2);
-    mpz_swap(p_out->x, aux2);               /* x' = B * lambda^2 - A - 2x */
+    mpz_mod(p_out->x, aux2, ctx->m);        /* x' = B * lambda^2 - A - 2x */
 
     mpz_neg(p_out->y, nu);
     mpz_submul(p_out->y, p_out->x, lambda); /* y' = -(lambda * x' + nu) */
 
-    mpz_mod(p_out->x, p_out->x, ctx->m);
     mpz_mod(p_out->y, p_out->y, ctx->m);
 
 clean:
