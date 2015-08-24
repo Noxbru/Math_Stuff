@@ -45,21 +45,20 @@ int elliptic_curve_sum_montgomery_affine(elliptic_point *p_out,
         }
 
         mpz_sub(aux1, p_in2->y, p_in1->y);
-        mpz_mul(lambda, aux1, aux2);            /* lambda = (y2 - y1) / (x2 - x1) */
-
-        mpz_mul(aux1, p_in1->x, lambda);
-        mpz_sub(nu, p_in1->y, aux1);            /* nu = y1 - lambda * x1 */
+        mpz_mul(lambda, aux1, aux2);        /* lambda = (y2 - y1) / (x2 - x1) */
 
         mpz_mul(aux1, lambda, lambda);
         mpz_mul(aux2, aux1, ctx->B);
         mpz_sub(aux2, aux2, ctx->A);
         mpz_sub(aux2, aux2, p_in1->x);
         mpz_sub(aux2, aux2, p_in2->x);
-        mpz_mod(p_out->x, aux2, ctx->m);        /* x' = B * lambda^2 - A - x1 - x2 */
+        mpz_mod(aux1, aux2, ctx->m);        /* x' = B * lambda^2 - A - x1 - x2 */
 
-        mpz_neg(p_out->y, nu);
-        mpz_submul(p_out->y, p_out->x, lambda); /* y' = -(lambda * x' + nu) */
+        mpz_neg(p_out->y, p_in1->y);
+        mpz_sub(aux2, aux1, p_in1->x);
+        mpz_submul(p_out->y, aux2, lambda); /* y' = -y1 - lambda * (x' - x1) */
 
+        mpz_swap(p_out->x, aux1);
         mpz_mod(p_out->y, p_out->y, ctx->m);
 
 clean:
@@ -113,20 +112,19 @@ int elliptic_curve_double_montgomery_affine(elliptic_point *p_out,
     mpz_mul_2exp(aux2, ctx->A, 1);
     mpz_addmul(nu, aux2, p_in->x);
     mpz_add_ui(nu, nu, 1);
-    mpz_mul(lambda, nu, aux1);              /* lambda = (3x^2 +2Ax + 1) / 2By */
-
-    mpz_mul(aux1, p_in->x, lambda);
-    mpz_sub(nu, p_in->y, aux1);             /* nu = y - lambda * x */
+    mpz_mul(lambda, nu, aux1);          /* lambda = (3x^2 +2Ax + 1) / 2By */
 
     mpz_mul(aux1, lambda, lambda);
     mpz_mul(aux2, aux1, ctx->B);
     mpz_sub(aux2, aux2, ctx->A);
     mpz_submul_ui(aux2, p_in->x, 2);
-    mpz_mod(p_out->x, aux2, ctx->m);        /* x' = B * lambda^2 - A - 2x */
+    mpz_mod(aux1, aux2, ctx->m);        /* x' = B * lambda^2 - A - 2x */
 
-    mpz_neg(p_out->y, nu);
-    mpz_submul(p_out->y, p_out->x, lambda); /* y' = -(lambda * x' + nu) */
+    mpz_neg(p_out->y, p_in->y);
+    mpz_sub(aux2, aux1, p_in->x);
+    mpz_submul(p_out->y, aux2, lambda); /* y' = -y - lambda *(x' - x) */
 
+    mpz_swap(p_out->x, aux1);
     mpz_mod(p_out->y, p_out->y, ctx->m);
 
 clean:
