@@ -45,19 +45,18 @@ int elliptic_curve_sum_weierstrass_affine(elliptic_point *p_out,
         }
 
         mpz_sub(aux1, p_in2->y, p_in1->y);
-        mpz_mul(lambda, aux1, aux2);            /* lambda = (y2 - y1) / (x2 - x1) */
-
-        mpz_mul(aux1, p_in1->x, lambda);
-        mpz_sub(nu, p_in1->y, aux1);            /* nu = y1 - lambda * x1 */
+        mpz_mul(lambda, aux1, aux2);        /* lambda = (y2 - y1) / (x2 - x1) */
 
         mpz_mul(aux1, lambda, lambda);
         mpz_sub(aux1, aux1, p_in1->x);
         mpz_sub(aux1, aux1, p_in2->x);
-        mpz_mod(p_out->x, aux1, ctx->m);        /* x' = lambda^2 - x1 - x2 */
+        mpz_mod(aux2, aux1, ctx->m);        /* x' = lambda^2 - x1 - x2 */
 
-        mpz_neg(p_out->y, nu);
-        mpz_submul(p_out->y, p_out->x, lambda); /* y' = -(lambda * x' + nu) */
+        mpz_neg(p_out->y, p_in1->y);
+        mpz_sub(aux1, aux2, p_in1->x);
+        mpz_submul(p_out->y, aux1, lambda); /* y' = -y1 -lambda * (x' - x1) */
 
+        mpz_swap(p_out->x, aux2);
         mpz_mod(p_out->y, p_out->y, ctx->m);
 
 clean:
@@ -108,18 +107,17 @@ int elliptic_curve_double_weierstrass_affine(elliptic_point *p_out,
     mpz_mul(aux1, p_in->x, p_in->x);
     mpz_mul_ui(aux1, aux1, 3);
     mpz_add(aux1, aux1, ctx->A);
-    mpz_mul(lambda, aux1, aux2);            /* lambda = (3x + a) / 2y */
-
-    mpz_mul(aux1, p_in->x, lambda);
-    mpz_sub(nu, p_in->y, aux1);             /* nu = y - lambda * x */
+    mpz_mul(lambda, aux1, aux2);        /* lambda = (3x + a) / 2y */
 
     mpz_mul(aux1, lambda, lambda);
     mpz_submul_ui(aux1, p_in->x, 2);
-    mpz_mod(p_out->x, aux1, ctx->m);        /* x' = lambda^2 - 2x */
+    mpz_mod(aux2, aux1, ctx->m);        /* x' = lambda^2 - 2x */
 
-    mpz_neg(p_out->y, nu);
-    mpz_submul(p_out->y, p_out->x, lambda); /* y' = -(lambda * x' + nu) */
+    mpz_neg(p_out->y, p_in->y);
+    mpz_sub(aux1, aux2, p_in->x);
+    mpz_submul(p_out->y, aux1, lambda); /* y' = -y - lambda * (x' - x) */
 
+    mpz_swap(p_out->x, aux2);
     mpz_mod(p_out->y, p_out->y, ctx->m);
 
 clean:
