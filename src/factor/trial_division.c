@@ -1,6 +1,7 @@
 #include <gmp.h>
 
 #include "primes_table.h"
+#include "factor.h"
 
 unsigned int trial_division(mpz_ptr n)
 {
@@ -13,9 +14,9 @@ unsigned int trial_division(mpz_ptr n)
     /* In both cases we use at least a table with
      * 16 KB of memory */
 #if PRIMES_TABLE_FAT
-    generate_primes_table(16384);
-#else
     generate_primes_table(16384/4);
+#else
+    generate_primes_table(16384);
 #endif
 
     prime = primes_table[0];
@@ -50,6 +51,7 @@ unsigned int trial_division_ui(mpz_ptr n)
 
     /* 4294967291 is the biggest prime that fits in a 32
      * bits word */
+    do
     {
         if(mpz_divisible_ui_p(n, prime))
             return prime;
