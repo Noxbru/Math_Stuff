@@ -42,7 +42,7 @@ void mont_mul(mpz_ptr out, mpz_srcptr in1, mpz_srcptr in2, mont_ctx *ctx)
         mpz_sub(out, out, ctx->m);
 }
 
-void mont_pow(mpz_ptr out, mpz_srcptr in, int times, mont_ctx *ctx)
+void mont_pow_ui(mpz_ptr out, mpz_srcptr in, unsigned long int times, mont_ctx *ctx)
 {
     mpz_t aux;
 
