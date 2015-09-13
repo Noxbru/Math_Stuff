@@ -13,6 +13,7 @@ endmacro(do_test_mul)
 
 prepare_executable(mont_mul mont_mul.c)
 prepare_executable(mont_pow mont_pow.c)
+prepare_executable(mont_pow_mpz mont_pow_mpz.c)
 
 #
 # NUMBERS FOR THE TESTS
@@ -52,3 +53,16 @@ do_test_mul(mont_pow2_2 mont_pow ${mont_pow_numbers2_2})
 do_test_mul(mont_pow2_3 mont_pow ${mont_pow_numbers2_3})
 do_test_mul(mont_pow2_4 mont_pow ${mont_pow_numbers2_4})
 do_test_mul(mont_pow2_5 mont_pow ${mont_pow_numbers2_5})
+
+# exponents are 2^64 + 2^32 - 1 and 2^66 + 2^33 - 1
+set(mont_pow_mpz_numbers2_1 9876789876 18446744078004518911 1234567654321 105687510110)
+set(mont_pow_mpz_numbers2_2 9876789876 73786976303428141055 1234567654321 685776966138)
+
+do_test_mul(mont_pow_mpz1_1 mont_pow_mpz ${mont_pow_numbers1_1})
+do_test_mul(mont_pow_mpz1_2 mont_pow_mpz ${mont_pow_numbers1_2})
+do_test_mul(mont_pow_mpz1_3 mont_pow_mpz ${mont_pow_numbers1_3})
+do_test_mul(mont_pow_mpz1_4 mont_pow_mpz ${mont_pow_numbers1_4})
+do_test_mul(mont_pow_mpz1_5 mont_pow_mpz ${mont_pow_numbers1_5})
+
+do_test_mul(mont_pow_mpz2_1 mont_pow_mpz ${mont_pow_mpz_numbers2_1})
+do_test_mul(mont_pow_mpz2_2 mont_pow_mpz ${mont_pow_mpz_numbers2_2})
