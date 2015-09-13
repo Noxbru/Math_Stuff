@@ -41,3 +41,23 @@ void mont_mul(mpz_ptr out, mpz_srcptr in1, mpz_srcptr in2, mont_ctx *ctx)
     if(mpz_cmp(out, ctx->m) > 0)
         mpz_sub(out, out, ctx->m);
 }
+
+void mont_pow(mpz_ptr out, mpz_srcptr in, int times, mont_ctx *ctx)
+{
+    mpz_t aux;
+
+    mpz_init_set_ui(aux, 1);
+    mpz_set(out, in);
+
+    while(times > 1)
+    {
+        if(times & 1)
+            mont_mul(aux, aux, out, ctx);
+
+        mont_mul(out, out, out, ctx);
+
+        times >>=1;
+    }
+
+    mpz_mul(out, out, aux);
+}
