@@ -12,6 +12,7 @@ macro(do_test_mul test_name test_executable
 endmacro(do_test_mul)
 
 prepare_executable(mont_mul mont_mul.c)
+prepare_executable(mont_pow mont_pow.c)
 
 #
 # NUMBERS FOR THE TESTS
@@ -27,3 +28,27 @@ do_test_mul(mont_mul1 mont_mul ${mont_mul_numbers1})
 do_test_mul(mont_mul2 mont_mul ${mont_mul_numbers2})
 do_test_mul(mont_mul3 mont_mul ${mont_mul_numbers3})
 do_test_mul(mont_mul4 mont_mul ${mont_mul_numbers4})
+
+set(mont_pow_numbers1_1 12345 2 55555 11660)
+set(mont_pow_numbers1_2 12345 3 55555 55250)
+set(mont_pow_numbers1_3 12345 4 55555 12515)
+set(mont_pow_numbers1_4 12345 5 55555 54775)
+set(mont_pow_numbers1_5 12345 6 55555 37470)
+
+set(mont_pow_numbers2_1 9876789876 2 1234567654321 233990428508)
+set(mont_pow_numbers2_2 9876789876 3 1234567654321 793520975495)
+set(mont_pow_numbers2_3 9876789876 4 1234567654321 947178751242)
+set(mont_pow_numbers2_4 9876789876 5 1234567654321 441750524501)
+set(mont_pow_numbers2_5 9876789876 6 1234567654321 477805590232)
+
+do_test_mul(mont_pow1_1 mont_pow ${mont_pow_numbers1_1})
+do_test_mul(mont_pow1_2 mont_pow ${mont_pow_numbers1_2})
+do_test_mul(mont_pow1_3 mont_pow ${mont_pow_numbers1_3})
+do_test_mul(mont_pow1_4 mont_pow ${mont_pow_numbers1_4})
+do_test_mul(mont_pow1_5 mont_pow ${mont_pow_numbers1_5})
+
+do_test_mul(mont_pow2_1 mont_pow ${mont_pow_numbers2_1})
+do_test_mul(mont_pow2_2 mont_pow ${mont_pow_numbers2_2})
+do_test_mul(mont_pow2_3 mont_pow ${mont_pow_numbers2_3})
+do_test_mul(mont_pow2_4 mont_pow ${mont_pow_numbers2_4})
+do_test_mul(mont_pow2_5 mont_pow ${mont_pow_numbers2_5})
