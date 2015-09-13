@@ -61,3 +61,30 @@ void mont_pow_ui(mpz_ptr out, mpz_srcptr in, unsigned long int times, mont_ctx *
 
     mpz_mul(out, out, aux);
 }
+
+void mont_pow_mpz(mpz_ptr out, mpz_srcptr in, mpz_srcptr times, mont_ctx *ctx)
+{
+    mpz_t aux, times_aux;
+
+    if(mpz_fits_ulong_p(times))
+    {
+        mont_pow_ui(out, in, mpz_get_ui(times), ctx);
+        return;
+    }
+
+    mpz_init_set_ui(aux, 1);
+    mpz_init_set(times_aux, times);
+    mpz_set(out, in);
+
+    while(mpz_cmp_ui(times_aux, 1u) > 0)
+    {
+        if(mpz_tstbit(times_aux,0))
+            mont_mul(aux, aux, out, ctx);
+
+        mont_mul(out, out, out, ctx);
+
+        mpz_tdiv_q_2exp(times_aux, times_aux, 1);
+    }
+
+    mpz_mul(out, out, aux);
+}

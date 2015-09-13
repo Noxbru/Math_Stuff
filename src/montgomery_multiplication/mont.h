@@ -34,4 +34,6 @@ void mont_mul(mpz_ptr out, mpz_srcptr in1, mpz_srcptr in2, mont_ctx *ctx);
 
 void mont_pow_ui(mpz_ptr out, mpz_srcptr in, unsigned long int times, mont_ctx *ctx);
 
+void mont_pow_mpz(mpz_ptr out, mpz_srcptr in, mpz_srcptr times, mont_ctx *ctx);
+
 #endif /* end of include guard: MONT_H */
