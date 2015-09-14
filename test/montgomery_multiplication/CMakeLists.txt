@@ -42,6 +42,10 @@ set(mont_pow_numbers2_3 9876789876 4 1234567654321 947178751242)
 set(mont_pow_numbers2_4 9876789876 5 1234567654321 441750524501)
 set(mont_pow_numbers2_5 9876789876 6 1234567654321 477805590232)
 
+# Numbers that triggered bugs in my code
+set(mont_pow_numbers3_1 2 15 12345 8078)
+set(mont_pow_numbers3_2 2 524288 188695899619 5132617518)
+
 do_test_mul(mont_pow1_1 mont_pow ${mont_pow_numbers1_1})
 do_test_mul(mont_pow1_2 mont_pow ${mont_pow_numbers1_2})
 do_test_mul(mont_pow1_3 mont_pow ${mont_pow_numbers1_3})
@@ -53,6 +57,9 @@ do_test_mul(mont_pow2_2 mont_pow ${mont_pow_numbers2_2})
 do_test_mul(mont_pow2_3 mont_pow ${mont_pow_numbers2_3})
 do_test_mul(mont_pow2_4 mont_pow ${mont_pow_numbers2_4})
 do_test_mul(mont_pow2_5 mont_pow ${mont_pow_numbers2_5})
+
+do_test_mul(mont_pow3_1 mont_pow ${mont_pow_numbers3_1})
+do_test_mul(mont_pow3_2 mont_pow ${mont_pow_numbers3_2})
 
 # exponents are 2^64 + 2^32 - 1 and 2^66 + 2^33 - 1
 set(mont_pow_mpz_numbers2_1 9876789876 18446744078004518911 1234567654321 105687510110)
