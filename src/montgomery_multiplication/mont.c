@@ -59,8 +59,12 @@ void mont_pow_ui(mpz_ptr out, mpz_srcptr in, unsigned long int times, mont_ctx *
 {
     mpz_t aux;
 
-    mpz_init_set_ui(aux, 1);
-    mont_transform(aux, aux, ctx);
+    mpz_init(aux);
+
+    /* Inlined transformation of '1' */
+    mpz_setbit(aux, ctx->r);
+    mpz_mod(aux, aux, ctx->m);
+
     mpz_set(out, in);
 
     while(times > 1)
@@ -88,9 +92,13 @@ void mont_pow_mpz(mpz_ptr out, mpz_srcptr in, mpz_srcptr times, mont_ctx *ctx)
         return;
     }
 
-    mpz_init_set_ui(aux, 1);
-    mont_transform(aux, aux, ctx);
+    mpz_init(aux);
     mpz_init_set(times_aux, times);
+
+    /* Inlined transformation of '1' */
+    mpz_setbit(aux, ctx->r);
+    mpz_mod(aux, aux, ctx->m);
+
     mpz_set(out, in);
 
     while(mpz_cmp_ui(times_aux, 1u) > 0)
