@@ -1,2 +1,3 @@
 -Isrc/elliptic_curves/
 -Isrc/factor/
+-Isrc/montgomery_multiplication/
