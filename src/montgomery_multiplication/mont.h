@@ -10,6 +10,10 @@ typedef struct mont_ctx
     mpz_t mm;
     size_t r;    /* The new modulus */
     mpz_t rr;
+
+#if FAT_OBJECTS
+    mpz_t aux1, aux2, aux3;
+#endif
 } mont_ctx;
 
 /* The four numbers of the context must fulfill the relation:

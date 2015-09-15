@@ -11,6 +11,10 @@ void mont_init(mont_ctx *ctx, mpz_srcptr mod)
     mpz_init_set(ctx->m, mod);
     mpz_inits(ctx->mm, aux, ctx->rr, not_used, NULL);
 
+#if FAT_OBJECTS
+    mpz_inits(ctx->aux1, ctx->aux2, ctx->aux3, NULL);
+#endif
+
     ctx->r = mpz_sizeinbase(mod, 2);
     mpz_setbit(aux, mpz_sizeinbase(mod, 2));
 
@@ -26,9 +30,14 @@ void mont_init(mont_ctx *ctx, mpz_srcptr mod)
 
 void mont_mul(mpz_ptr out, mpz_srcptr in1, mpz_srcptr in2, mont_ctx *ctx)
 {
+#if FAT_OBJECTS
+    mpz_ptr aux1 = ctx->aux1;
+    mpz_ptr aux2 = ctx->aux2;
+    mpz_ptr aux3 = ctx->aux3;
+#else
     mpz_t aux1, aux2, aux3;
-
     mpz_inits(aux1, aux2, aux3, NULL);
+#endif
 
     mpz_mul(aux1, in1, in2);
     mpz_mul(aux2, aux1, ctx->mm);
@@ -40,6 +49,10 @@ void mont_mul(mpz_ptr out, mpz_srcptr in1, mpz_srcptr in2, mont_ctx *ctx)
 
     if(mpz_cmp(out, ctx->m) > 0)
         mpz_sub(out, out, ctx->m);
+
+#if !FAT_OBJECTS
+    mpz_clears(aux1, aux2, aux3, NULL);
+#endif
 }
 
 void mont_pow_ui(mpz_ptr out, mpz_srcptr in, unsigned long int times, mont_ctx *ctx)
