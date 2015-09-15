@@ -74,6 +74,8 @@ void mont_pow_ui(mpz_ptr out, mpz_srcptr in, unsigned long int times, mont_ctx *
     }
 
     mont_mul(out, out, aux, ctx);
+
+    mpz_clear(aux);
 }
 
 void mont_pow_mpz(mpz_ptr out, mpz_srcptr in, mpz_srcptr times, mont_ctx *ctx)
@@ -102,4 +104,6 @@ void mont_pow_mpz(mpz_ptr out, mpz_srcptr in, mpz_srcptr times, mont_ctx *ctx)
     }
 
     mont_mul(out, out, aux, ctx);
+
+    mpz_clear(aux);
 }
