@@ -14,5 +14,7 @@ int main(int argc, const char *argv[])
 
     printf("%u\n", trial_division_ui(number));
 
+    mpz_clear(number);
+
     return 0;
 }

@@ -16,5 +16,7 @@ int main(int argc, const char *argv[])
     elliptic(factor, number);
     gmp_printf("%Zd\n",factor);
 
+    mpz_clears(number, factor, NULL);
+
     return 0;
 }
