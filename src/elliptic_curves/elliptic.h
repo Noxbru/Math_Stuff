@@ -2,6 +2,7 @@
 #define ELLIPTIC_H
 
 #include <gmp.h>
+#include <assert.h>
 
 /* Elliptic points >>> */
 typedef enum
@@ -343,6 +344,8 @@ static inline int elliptic_curve_sum(
         if(p_out->type == POINT_AFFINE)
             return elliptic_curve_sum_montgomery_affine(p_out, p_in1, p_in2, ctx);
     }
+
+    assert(!"Should not reach this point");
 }
 
 static inline int elliptic_curve_double(
@@ -362,6 +365,8 @@ static inline int elliptic_curve_double(
         if(p_out->type == POINT_AFFINE)
             return elliptic_curve_double_montgomery_affine(p_out, p_in, ctx);
     }
+
+    assert(!"Should not reach this point");
 }
 
 static inline int elliptic_curve_mul(
@@ -382,6 +387,8 @@ static inline int elliptic_curve_mul(
         if(p_out->type == POINT_AFFINE)
             return elliptic_curve_mul_montgomery_affine(p_out, p_in, times, ctx);
     }
+
+    assert(!"Should not reach this point");
 }
 /* <<< */
 
