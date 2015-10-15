@@ -18,13 +18,13 @@ typedef struct
     point_type type;
 } elliptic_point;
 
-void static inline elliptic_point_init(elliptic_point *point)
+static inline void elliptic_point_init(elliptic_point *point)
 {
     mpz_inits(point->x, point->y, point->z, NULL);
     point->type = POINT_NULL;
 }
 
-void static inline elliptic_point_init_set(
+static inline void elliptic_point_init_set(
         elliptic_point *point1,
         elliptic_point *point2)
 {
@@ -35,7 +35,7 @@ void static inline elliptic_point_init_set(
     point1->type = point2->type;
 }
 
-void static inline elliptic_point_init_mpz_affine(
+static inline void elliptic_point_init_mpz_affine(
         elliptic_point *point,
         mpz_ptr x, mpz_ptr y)
 {
@@ -45,7 +45,7 @@ void static inline elliptic_point_init_mpz_affine(
     point->type = POINT_AFFINE;
 }
 
-void static inline elliptic_point_init_mpz_projective(
+static inline void elliptic_point_init_mpz_projective(
         elliptic_point *point,
         mpz_ptr x, mpz_ptr y, mpz_ptr z)
 {
@@ -56,7 +56,7 @@ void static inline elliptic_point_init_mpz_projective(
     point->type = POINT_PROJECTIVE;
 }
 
-void static inline elliptic_point_init_si_affine(
+static inline void elliptic_point_init_si_affine(
         elliptic_point *point,
         int x, int y)
 {
@@ -66,7 +66,7 @@ void static inline elliptic_point_init_si_affine(
     point->type = POINT_AFFINE;
 }
 
-void static inline elliptic_point_init_si_projective(
+static inline void elliptic_point_init_si_projective(
         elliptic_point *point,
         int x, int y, int z)
 {
@@ -77,7 +77,7 @@ void static inline elliptic_point_init_si_projective(
     point->type = POINT_PROJECTIVE;
 }
 
-void static inline elliptic_point_set(
+static inline void elliptic_point_set(
         elliptic_point *point1,
         elliptic_point *point2)
 {
@@ -88,7 +88,7 @@ void static inline elliptic_point_set(
     point1->type = point2->type;
 }
 
-void static inline elliptic_point_set_mpz_affine(
+static inline void elliptic_point_set_mpz_affine(
         elliptic_point *point,
         mpz_ptr x, mpz_ptr y)
 {
@@ -98,7 +98,7 @@ void static inline elliptic_point_set_mpz_affine(
     point->type = POINT_AFFINE;
 }
 
-void static inline elliptic_point_set_mpz_projective(
+static inline void elliptic_point_set_mpz_projective(
         elliptic_point *point,
         mpz_ptr x, mpz_ptr y, mpz_ptr z)
 {
@@ -109,7 +109,7 @@ void static inline elliptic_point_set_mpz_projective(
     point->type = POINT_PROJECTIVE;
 }
 
-void static inline elliptic_point_set_si_affine(
+static inline void elliptic_point_set_si_affine(
         elliptic_point *point,
         int x, int y)
 {
@@ -119,7 +119,7 @@ void static inline elliptic_point_set_si_affine(
     point->type = POINT_AFFINE;
 }
 
-void static inline elliptic_point_set_si_projective(
+static inline void elliptic_point_set_si_projective(
         elliptic_point *point,
         int x, int y, int z)
 {
@@ -130,7 +130,7 @@ void static inline elliptic_point_set_si_projective(
     point->type = POINT_PROJECTIVE;
 }
 
-void static inline elliptic_point_clear(elliptic_point *point)
+static inline void elliptic_point_clear(elliptic_point *point)
 {
     mpz_clears(point->x, point->y, point->z, NULL);
     point->type = POINT_NULL;
@@ -160,7 +160,7 @@ typedef struct
 } elliptic_context;
 
 /* Generic Elliptic Curves Functions >>> */
-void static inline elliptic_curve_init(elliptic_context *ctx)
+static inline void elliptic_curve_init(elliptic_context *ctx)
 {
     mpz_inits(ctx->A, ctx->B, ctx->m, NULL);
 #if FAT_OBJECTS
@@ -169,7 +169,7 @@ void static inline elliptic_curve_init(elliptic_context *ctx)
     ctx->type = ELLIPTIC_CURVE_NULL;
 }
 
-void static inline elliptic_curve_init_set(
+static inline void elliptic_curve_init_set(
         elliptic_context *ctx1,
         elliptic_context *ctx2)
 {
@@ -184,7 +184,7 @@ void static inline elliptic_curve_init_set(
     ctx1->type = ctx2->type;
 }
 
-void static inline elliptic_curve_clear(elliptic_context *ctx)
+static inline void elliptic_curve_clear(elliptic_context *ctx)
 {
     mpz_clears(ctx->A, ctx->B, ctx->m, NULL);
 #if FAT_OBJECTS
@@ -195,7 +195,7 @@ void static inline elliptic_curve_clear(elliptic_context *ctx)
 /* <<< */
 
 /* Weierstrass Elliptic Curves Functions >>> */
-void static inline elliptic_curve_init_mpz_weierstrass(
+static inline void elliptic_curve_init_mpz_weierstrass(
         elliptic_context *ctx,
         mpz_ptr A, mpz_ptr B, mpz_ptr m)
 {
@@ -210,7 +210,7 @@ void static inline elliptic_curve_init_mpz_weierstrass(
     ctx->type = ELLIPTIC_CURVE_WEIERSTRASS;
 }
 
-void static inline elliptic_curve_init_si_weierstrass(
+static inline void elliptic_curve_init_si_weierstrass(
         elliptic_context *ctx,
         int A, int B, int m)
 {
@@ -260,7 +260,7 @@ int elliptic_curve_mul_weierstrass_projective(
         elliptic_context *ctx);
 /* <<< */
 /* Montgomery Elliptic Curves Functions >>> */
-void static inline elliptic_curve_init_mpz_montgomery(
+static inline void elliptic_curve_init_mpz_montgomery(
         elliptic_context *ctx,
         mpz_ptr A, mpz_ptr B, mpz_ptr m)
 {
@@ -275,7 +275,7 @@ void static inline elliptic_curve_init_mpz_montgomery(
     ctx->type = ELLIPTIC_CURVE_MONTGOMERY;
 }
 
-void static inline elliptic_curve_init_si_montgomery(
+static inline void elliptic_curve_init_si_montgomery(
         elliptic_context *ctx,
         int A, int B, int m)
 {
@@ -325,7 +325,7 @@ int elliptic_curve_mul_montgomery_projective(
         elliptic_context *ctx);
 /* <<< */
 /* Dispatching Elliptic Curves Functions >>> */
-int static inline elliptic_curve_sum(
+static inline int elliptic_curve_sum(
         elliptic_point *p_out,
         elliptic_point *p_in1,
         elliptic_point *p_in2,
@@ -345,7 +345,7 @@ int static inline elliptic_curve_sum(
     }
 }
 
-int static inline elliptic_curve_double(
+static inline int elliptic_curve_double(
         elliptic_point *p_out,
         elliptic_point *p_in,
         elliptic_context *ctx)
@@ -364,7 +364,7 @@ int static inline elliptic_curve_double(
     }
 }
 
-int static inline elliptic_curve_mul(
+static inline int elliptic_curve_mul(
         elliptic_point *p_out,
         elliptic_point *p_in,
         unsigned int times,
