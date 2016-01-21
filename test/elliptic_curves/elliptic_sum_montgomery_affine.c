@@ -32,5 +32,9 @@ int main(int argc, const char *argv[])
 
     gmp_printf("%Zd\t%Zd\n", point1.x, point1.y);
 
+    elliptic_curve_clear(&ctx);
+    elliptic_point_clear(&point1);
+    elliptic_point_clear(&point2);
+
     return 0;
 }

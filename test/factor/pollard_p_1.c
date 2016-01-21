@@ -16,5 +16,7 @@ int main(int argc, const char *argv[])
     pollard_p_1(factor, number, 40000);
     gmp_printf("%Zd\n",factor);
 
+    mpz_clears(number, factor, NULL);
+
     return 0;
 }

@@ -27,13 +27,12 @@ int elliptic_curve_sum_montgomery_affine(elliptic_point *p_out,
         mpz_ptr aux1 = ctx->aux1;
         mpz_ptr aux2 = ctx->aux2;
         mpz_ptr lambda = ctx->lambda;
-        mpz_ptr nu = ctx->nu;
 #else
         mpz_t aux1, aux2;
-        mpz_t lambda, nu;
+        mpz_t lambda;
 
         mpz_inits(aux1, aux2, NULL);
-        mpz_inits(lambda, nu, NULL);
+        mpz_inits(lambda, NULL);
 #endif
 
         mpz_sub(aux1, p_in2->x, p_in1->x);
@@ -64,7 +63,7 @@ int elliptic_curve_sum_montgomery_affine(elliptic_point *p_out,
 clean:
         ;
 #if !FAT_OBJECTS
-        mpz_clears(aux1, aux2, lambda, nu, NULL);
+        mpz_clears(aux1, aux2, lambda, NULL);
 #endif
     }
 
