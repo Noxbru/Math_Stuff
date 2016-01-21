@@ -13,6 +13,7 @@ set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -Wall -Wextra -pedantic")
 
 add_definitions(-DPRIMES_TABLE_FAT=1)
 add_definitions(-DFAT_OBJECTS=1)
+add_definitions(-DUSE_INTERNAL_MONTGOMERY_MULTIPLICATION=0)
 
 add_subdirectory(src)
 

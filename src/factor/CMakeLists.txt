@@ -9,6 +9,7 @@ add_library(factor
 
 target_include_directories(factor PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 target_include_directories(factor PUBLIC ${elliptic_include_dir})
-target_link_libraries(factor elliptic)
+target_include_directories(factor PUBLIC ${montgomery_multiplication_include_dir})
+target_link_libraries(factor elliptic montgomery_multiplication)
 
 set(${factor_include_dir} ${CMAKE_CURRENT_SOURCE_DIR})
