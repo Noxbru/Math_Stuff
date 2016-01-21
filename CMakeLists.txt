@@ -11,8 +11,10 @@ set(CMAKE_C_FLAGS_RELEASE "-O2 -DNDEBUG"
 
 set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -Wall -Wextra -pedantic")
 
-add_subdirectory(src)
+add_definitions(-DPRIMES_TABLE_FAT=1)
+add_definitions(-DFAT_OBJECTS=1)
 
+add_subdirectory(src)
 
 # Testing Stuff
 

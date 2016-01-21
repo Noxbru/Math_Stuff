@@ -40,18 +40,18 @@ void generate_primes_table(unsigned int size)
 
     for(prime = last_prime + 2; primes_table_size < size; )
     {
-        unsigned int j = 1;
         unsigned int aux = primes_table[0];
         unsigned int sup_limit = sqrt(prime) + 1;
 
+        i = 1;
         do
         {
 #if PRIMES_TABLE_FAT
-            aux = primes_table[j];
+            aux = primes_table[i];
 #else
-            aux += primes_table[j];
+            aux += primes_table[i];
 #endif
-            j++;
+            i++;
 
             if((prime % aux) == 0)
                 goto not_prime;
@@ -74,8 +74,10 @@ not_prime:
 
 unsigned int get_prime(unsigned int n)
 {
+#if !PRIMES_TABLE_FAT
     unsigned int i;
     unsigned int prime;
+#endif
 
     assert(n);
 

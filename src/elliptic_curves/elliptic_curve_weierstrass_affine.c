@@ -27,13 +27,12 @@ int elliptic_curve_sum_weierstrass_affine(elliptic_point *p_out,
         mpz_ptr aux1 = ctx->aux1;
         mpz_ptr aux2 = ctx->aux2;
         mpz_ptr lambda = ctx->lambda;
-        mpz_ptr nu = ctx->nu;
 #else
         mpz_t aux1, aux2;
-        mpz_t lambda, nu;
+        mpz_t lambda;
 
         mpz_inits(aux1, aux2, NULL);
-        mpz_inits(lambda, nu, NULL);
+        mpz_inits(lambda, NULL);
 #endif
 
         mpz_sub(aux1, p_in2->x, p_in1->x);
@@ -62,7 +61,7 @@ int elliptic_curve_sum_weierstrass_affine(elliptic_point *p_out,
 clean:
         ;
 #if !FAT_OBJECTS
-        mpz_clears(aux1, aux2, lambda, nu, NULL);
+        mpz_clears(aux1, aux2, lambda, NULL);
 #endif
     }
 
@@ -79,10 +78,9 @@ int elliptic_curve_double_weierstrass_affine(elliptic_point *p_out,
     mpz_ptr aux1 = ctx->aux1;
     mpz_ptr aux2 = ctx->aux2;
     mpz_ptr lambda = ctx->lambda;
-    mpz_ptr nu = ctx->nu;
 #else
     mpz_t aux1, aux2;
-    mpz_t lambda, nu;
+    mpz_t lambda;
 #endif
 
     if(mpz_cmp_ui(p_in->y, 0) == 0)
@@ -93,7 +91,7 @@ int elliptic_curve_double_weierstrass_affine(elliptic_point *p_out,
 
 #if !FAT_OBJECTS
     mpz_inits(aux1, aux2, NULL);
-    mpz_inits(lambda, nu, NULL);
+    mpz_inits(lambda, NULL);
 #endif
 
     mpz_add(aux1, p_in->y, p_in->y);
@@ -122,7 +120,7 @@ int elliptic_curve_double_weierstrass_affine(elliptic_point *p_out,
 
 clean:
 #if !FAT_OBJECTS
-    mpz_clears(aux1, aux2, lambda, nu, NULL);
+    mpz_clears(aux1, aux2, lambda, NULL);
 #endif
 
     return !err;
