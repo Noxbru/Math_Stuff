@@ -39,4 +39,6 @@ void pollard_p_1(mpz_ptr out, mpz_ptr n, unsigned int b)
         i++;
     }
     while (i < b);
+
+    mpz_clears(base, aux0, aux1, aux2, NULL);
 }
