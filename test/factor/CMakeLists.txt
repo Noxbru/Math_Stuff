@@ -22,6 +22,7 @@ prepare_executable(pollard_rho pollard_rho.c)
 prepare_executable(pollard_rho2 pollard_rho2.c)
 prepare_executable(pollard_rho3 pollard_rho3.c)
 prepare_executable(pollard_p_1 pollard_p_1.c)
+prepare_executable(quadratic_sieve quadratic_sieve.c)
 prepare_executable(shanks shanks.c)
 
 #
