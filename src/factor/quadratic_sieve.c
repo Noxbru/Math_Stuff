@@ -123,7 +123,7 @@ void quadratic_sieve(mpz_ptr out, mpz_t n)
         if(kronecker_symbol == 0)
         {
             mpz_set_ui(out, prime);
-            goto out;
+            goto out2;
         }
 
         /* Prime for the base :) */
@@ -229,17 +229,19 @@ void quadratic_sieve(mpz_ptr out, mpz_t n)
     }
 
 out:
-    for(i = 1; i < tried_numbers; i++)
-    {
-        bits[0] |= bits[i];
-    }
-    print_bit64(bits[0]); printf("\n");
-
-    free(prime_base);
-    mpz_clears(aux0, aux1, aux2, aux3, NULL);
     for(i = 0; i < tried_numbers; i++)
     {
         mpz_clear(relations_x[i]);
         mpz_clear(relations_y[i]);
     }
+
+out2:
+    free(prime_base);
+    mpz_clears(aux0, aux1, aux2, aux3, NULL);
+
+    for(i = 1; i < tried_numbers; i++)
+    {
+        bits[0] |= bits[i];
+    }
+    print_bit64(bits[0]); printf("\n");
 }
