@@ -4,6 +4,7 @@ add_library(factor
     pollard_rho.c
     pollard_p_1.c
     primes_table.c
+    quadratic_sieve.c
     shanks.c
     trial_division.c)
 
