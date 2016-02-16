@@ -6,7 +6,7 @@
 #include "primes_table.h"
 #include "factor.h"
 
-#define tried_numbers 30
+#define tried_numbers 50
 
 static inline void print_bit64(uint64_t u)
 {
@@ -141,51 +141,61 @@ void quadratic_sieve(mpz_ptr out, mpz_t n)
     }
     printf("\n");
 
-    mpz_sqrt(aux0, n);
-    mpz_add_ui(aux0, aux0, 1);
-    mpz_mul(aux1, aux0, aux0);
-
-    mpz_sub(aux2, aux1, n);
-
-    /*gmp_printf("%Zd\n", aux0);*/
-
+    unsigned int poly_factor = 1;
+    unsigned int numbers_per_poly = 100000;
     for(i = 0; i < tried_numbers; )
     {
-        /* We need to keep 'aux2' around */
-        mpz_set(aux3, aux2);
+        mpz_mul_ui(aux1, n, poly_factor);
 
-        for(j = 0; j < prime_base_size; j++)
-        {
-            while(mpz_divisible_ui_p(aux3, prime_base[j]))
-            {
-                mpz_divexact_ui(aux3, aux3, prime_base[j]);
-                bits[i] ^= 1ul << j;
-            }
-        }
-
-        if(mpz_cmp_ui(aux3, 1) != 0)
-            bits[i] = 0;
-        /* One usual relation, add it to the list */
-        else if(bits[i] != 0)
-        {
-            mpz_init_set(relations_x[i], aux0);
-            mpz_init_set(relations_y[i], aux2);
-            i++;
-        }
-        /* Quadratic relation! nice! */
-        else
-        {
-            mpz_sqrt(aux3, aux2);
-            mpz_add(aux3, aux3, aux0);
-            mpz_gcd(out, aux3, n);
-
-            if(mpz_cmp_ui(out,1) && mpz_cmp(out, n))
-                goto out;
-        }
-
-        mpz_addmul_ui(aux2, aux0, 2);
-        mpz_add_ui(aux2, aux2, 1);
+        mpz_sqrt(aux0, aux1);
         mpz_add_ui(aux0, aux0, 1);
+        mpz_mul(aux1, aux0, aux0);
+
+        mpz_sub(aux2, aux1, n);
+
+        /*gmp_printf("%Zd\n", aux0);*/
+
+        for(j = 0; j < numbers_per_poly; j++)
+        {
+            /* We need to keep 'aux2' around */
+            mpz_set(aux3, aux2);
+
+            for(k = 0; k < prime_base_size; k++)
+            {
+                while(mpz_divisible_ui_p(aux3, prime_base[k]))
+                {
+                    mpz_divexact_ui(aux3, aux3, prime_base[k]);
+                    bits[i] ^= 1ul << k;
+                }
+            }
+
+            if(mpz_cmp_ui(aux3, 1) != 0)
+                bits[i] = 0;
+            /* One usual relation, add it to the list */
+            else if(bits[i] != 0)
+            {
+                mpz_init_set(relations_x[i], aux0);
+                mpz_init_set(relations_y[i], aux2);
+                i++;
+            }
+            /* Quadratic relation! nice! */
+            else
+            {
+                mpz_sqrt(aux3, aux2);
+                mpz_add(aux3, aux3, aux0);
+                mpz_gcd(out, aux3, n);
+
+                if(mpz_cmp_ui(out,1) && mpz_cmp(out, n))
+                    goto out;
+            }
+
+            mpz_addmul_ui(aux2, aux0, 2);
+            mpz_add_ui(aux2, aux2, 1);
+            mpz_add_ui(aux0, aux0, 1);
+        }
+
+        poly_factor++;
+        printf("POLYNOMIAL CHANGE!\n");
     }
 
     for(i = 0; i < tried_numbers; i++)
