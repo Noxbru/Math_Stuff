@@ -19,72 +19,6 @@ static inline void print_bit64(uint64_t u)
     fputs(str, stdout);
 }
 
-static void test_2_numbers(mpz_ptr out, mpz_ptr in1, mpz_ptr in2, mpz_ptr n)
-{
-    mpz_t x1, x2, y1, y2;
-
-    mpz_inits(x1, x2, y1, y2, NULL);
-
-    mpz_mul(x1, in1, in1);
-    mpz_mul(x2, in2, in2);
-
-    mpz_sub(y1, x1, n);
-    mpz_sub(y2, x2, n);
-
-    mpz_mul(y2, y1, y2);
-    if(mpz_perfect_square_p(y2))
-    {
-        mpz_sqrt(y1, y2);
-
-        mpz_mul(x1, in1, in2);
-        mpz_add(y1, x1, y1);
-        mpz_gcd(out, y1, n);
-    }
-    mpz_clears(x1, x2, y1, y2, NULL);
-}
-
-static void test_3_numbers(mpz_ptr out,
-        mpz_ptr in1, mpz_ptr in2, mpz_ptr in3,
-        mpz_ptr n)
-{
-    mpz_t x1, x2, y1, y2;
-    mpz_t x_accumulator, y_accumulator;
-
-    mpz_inits(x1, x2, y1, y2, NULL);
-
-    mpz_init_set_ui(x_accumulator, 1);
-    mpz_init_set_ui(y_accumulator, 1);
-
-#define TEST_BLOCK(X) \
-{ \
-    mpz_mul(x2, X, X); \
-    mpz_sub(y2, x2, n); \
- \
-    mpz_mul(x_accumulator, x_accumulator, X); \
-    mpz_mul(y_accumulator, y_accumulator, y2); \
-}
-
-    TEST_BLOCK(in1);
-    TEST_BLOCK(in2);
-    TEST_BLOCK(in3);
-
-#undef TEST_BLOCK
-
-    if(mpz_perfect_square_p(y_accumulator))
-    {
-        printf("ping\n");
-        mpz_sqrt(y1, y_accumulator);
-        if(mpz_congruent_p(x_accumulator, y1, n))
-            printf("Game Over!\n");
-
-        mpz_add(y1, x_accumulator, y1);
-
-        mpz_gcd(out, y1, n);
-        gmp_printf("%Zd\n",out);
-    }
-    mpz_clears(x1, x2, y1, y2, x_accumulator, y_accumulator, NULL);
-}
-
 static void test_numbers(mpz_ptr out,
         mpz_t *x, mpz_t *y,
         unsigned int *indices, unsigned int size,
@@ -256,7 +190,6 @@ void quadratic_sieve(mpz_ptr out, mpz_t n)
             {
                 printf("Possible factorization found! %d and %d\n",i, j);
 
-                /*test_2_numbers(out, relations_x[i], relations_x[j], n);*/
                 test_numbers(out, relations_x, relations_y,
                         indices, 2, n);
 
@@ -274,7 +207,6 @@ void quadratic_sieve(mpz_ptr out, mpz_t n)
 
                     test_numbers(out, relations_x, relations_y,
                             indices, 3, n);
-                    /*test_3_numbers(out, relations_x[i], relations_x[j], relations_x[k], n);*/
 
                     if(mpz_cmp_ui(out,1) && mpz_cmp(out, n))
                         goto out;
