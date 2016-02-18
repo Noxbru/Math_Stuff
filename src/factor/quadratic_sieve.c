@@ -47,7 +47,6 @@ static void test_3_numbers(mpz_ptr out,
         mpz_ptr in1, mpz_ptr in2, mpz_ptr in3,
         mpz_ptr n)
 {
-    /*unsigned int i;*/
     mpz_t x1, x2, y1, y2;
     mpz_t x_accumulator, y_accumulator;
 
@@ -56,7 +55,6 @@ static void test_3_numbers(mpz_ptr out,
     mpz_init_set_ui(x_accumulator, 1);
     mpz_init_set_ui(y_accumulator, 1);
 
-    /*for(i = 0; i < 3; i++)*/
 #define TEST_BLOCK(X) \
 { \
     mpz_mul(x2, X, X); \
@@ -85,6 +83,41 @@ static void test_3_numbers(mpz_ptr out,
         gmp_printf("%Zd\n",out);
     }
     mpz_clears(x1, x2, y1, y2, x_accumulator, y_accumulator, NULL);
+}
+
+static void test_numbers(mpz_ptr out,
+        mpz_ptr *x, mpz_ptr *y,
+        unsigned int *indices, unsigned int size,
+        mpz_ptr n)
+{
+    unsigned int i;
+    mpz_t x_accumulator, y_accumulator;
+    mpz_t aux;
+
+    mpz_init_set_ui(x_accumulator, 1);
+    mpz_init_set_ui(y_accumulator, 1);
+    mpz_init(aux);
+
+    for(i = 0; i < size; i++)
+    {
+        mpz_mul(x_accumulator, x_accumulator, x[indices[i]]);
+        mpz_mul(y_accumulator, y_accumulator, y[indices[i]]);
+    }
+
+    if(mpz_perfect_square_p(y_accumulator))
+    {
+        printf("ping\n");
+        mpz_sqrt(aux, y_accumulator);
+        if(mpz_congruent_p(x_accumulator, aux, n))
+            printf("Game Over!\n");
+
+        mpz_add(aux, x_accumulator, aux);
+
+        mpz_gcd(out, aux, n);
+        gmp_printf("%Zd\n",out);
+    }
+
+    mpz_clears(aux, x_accumulator, y_accumulator, NULL);
 }
 
 void quadratic_sieve(mpz_ptr out, mpz_t n)
