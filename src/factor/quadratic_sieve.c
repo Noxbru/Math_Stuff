@@ -124,11 +124,11 @@ void quadratic_sieve(mpz_ptr out, mpz_t n)
 {
     unsigned int i, j, k;
 
-    uint64_t bits[tried_numbers] = {0lu};
-    unsigned int indices[tried_numbers] = {0u};
+    uint64_t *bits;
+    unsigned int *indices;
 
-    mpz_t relations_x[tried_numbers];
-    mpz_t relations_y[tried_numbers];
+    mpz_t *relations_x;
+    mpz_t *relations_y;
 
     unsigned int *prime_base;
     unsigned int prime_base_size = 18;
@@ -136,6 +136,11 @@ void quadratic_sieve(mpz_ptr out, mpz_t n)
     mpz_t aux0, aux1, aux2, aux3;
 
     mpz_inits(aux0, aux1, aux2, aux3, NULL);
+    relations_x = malloc(tried_numbers * sizeof(mpz_t));
+    relations_y = malloc(tried_numbers * sizeof(mpz_t));
+
+    bits = calloc(tried_numbers, sizeof(uint64_t));
+    indices = malloc(tried_numbers * sizeof(unsigned int));
 
     /*
      * We need more primes than twice the size of the base we are
@@ -287,12 +292,17 @@ out:
     }
 
 out2:
-    free(prime_base);
-    mpz_clears(aux0, aux1, aux2, aux3, NULL);
 
     for(i = 1; i < tried_numbers; i++)
     {
         bits[0] |= bits[i];
     }
     print_bit64(bits[0]); printf("\n");
+
+    free(relations_x);
+    free(relations_y);
+    free(bits);
+    free(indices);
+    free(prime_base);
+    mpz_clears(aux0, aux1, aux2, aux3, NULL);
 }
