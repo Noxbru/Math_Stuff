@@ -86,7 +86,7 @@ static void test_3_numbers(mpz_ptr out,
 }
 
 static void test_numbers(mpz_ptr out,
-        mpz_ptr *x, mpz_ptr *y,
+        mpz_t *x, mpz_t *y,
         unsigned int *indices, unsigned int size,
         mpz_ptr n)
 {
@@ -125,6 +125,7 @@ void quadratic_sieve(mpz_ptr out, mpz_t n)
     unsigned int i, j, k;
 
     uint64_t bits[tried_numbers] = {0lu};
+    unsigned int indices[tried_numbers] = {0u};
 
     mpz_t relations_x[tried_numbers];
     mpz_t relations_y[tried_numbers];
@@ -240,15 +241,19 @@ void quadratic_sieve(mpz_ptr out, mpz_t n)
 
     for(i = 0; i < tried_numbers; i++)
     {
+        indices[0] = i;
         for(j = i+1; j < tried_numbers; j++)
         {
+            indices[1] = j;
             uint64_t t = bits[i] ^ bits[j];
 
             if(t == 0)
             {
                 printf("Possible factorization found! %d and %d\n",i, j);
 
-                test_2_numbers(out, relations_x[i], relations_x[j], n);
+                /*test_2_numbers(out, relations_x[i], relations_x[j], n);*/
+                test_numbers(out, relations_x, relations_y,
+                        indices, 2, n);
 
                 if(mpz_cmp_ui(out,1) && mpz_cmp(out, n))
                     goto out;
@@ -257,11 +262,14 @@ void quadratic_sieve(mpz_ptr out, mpz_t n)
 
             for(k = j+1; k < tried_numbers; k++)
             {
+                indices[2] = k;
                 if((t ^ bits[k]) == 0)
                 {
                     printf("Possible factorization found! %d, %d and %d\n",i, j, k);
 
-                    test_3_numbers(out, relations_x[i], relations_x[j], relations_x[k], n);
+                    test_numbers(out, relations_x, relations_y,
+                            indices, 3, n);
+                    /*test_3_numbers(out, relations_x[i], relations_x[j], relations_x[k], n);*/
 
                     if(mpz_cmp_ui(out,1) && mpz_cmp(out, n))
                         goto out;
