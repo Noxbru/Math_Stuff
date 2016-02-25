@@ -152,6 +152,7 @@ void quadratic_sieve(mpz_ptr out, mpz_t n)
 {
     unsigned int i, j, k;
 
+    unsigned int found_relations;
     uint64_t *bits;
     unsigned int *indices;
 
@@ -210,7 +211,7 @@ void quadratic_sieve(mpz_ptr out, mpz_t n)
 
     unsigned int poly_factor = 1;
     unsigned int numbers_per_poly = 100000;
-    for(i = 0; i < tried_numbers; )
+    for(found_relations = 0; found_relations < tried_numbers; )
     {
         mpz_mul_ui(aux1, n, poly_factor);
 
@@ -222,7 +223,7 @@ void quadratic_sieve(mpz_ptr out, mpz_t n)
 
         /*gmp_printf("%Zd\n", aux0);*/
 
-        for(j = 0; j < numbers_per_poly && i < tried_numbers; j++)
+        for(j = 0; j < numbers_per_poly && found_relations < tried_numbers; j++)
         {
             /* We need to keep 'aux2' around */
             mpz_set(aux3, aux2);
@@ -232,18 +233,18 @@ void quadratic_sieve(mpz_ptr out, mpz_t n)
                 while(mpz_divisible_ui_p(aux3, prime_base[k]))
                 {
                     mpz_divexact_ui(aux3, aux3, prime_base[k]);
-                    bits[i] ^= 1ul << k;
+                    bits[found_relations] ^= 1ul << k;
                 }
             }
 
             if(mpz_cmp_ui(aux3, 1) != 0)
-                bits[i] = 0;
+                bits[found_relations] = 0;
             /* One usual relation, add it to the list */
-            else if(bits[i] != 0)
+            else if(bits[found_relations] != 0)
             {
-                mpz_init_set(relations_x[i], aux0);
-                mpz_init_set(relations_y[i], aux2);
-                i++;
+                mpz_init_set(relations_x[found_relations], aux0);
+                mpz_init_set(relations_y[found_relations], aux2);
+                found_relations++;
             }
             /* Quadratic relation! nice! */
             else
@@ -277,7 +278,7 @@ void quadratic_sieve(mpz_ptr out, mpz_t n)
     solve_by_magic(out, bits, relations_x, relations_y, tried_numbers, n);
 
 out:
-    for(i = 0; i < tried_numbers; i++)
+    for(i = 0; i < found_relations; i++)
     {
         mpz_clear(relations_x[i]);
         mpz_clear(relations_y[i]);
