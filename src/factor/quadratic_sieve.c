@@ -155,7 +155,7 @@ void quadratic_sieve(mpz_ptr out, mpz_t n)
 
         /*gmp_printf("%Zd\n", aux0);*/
 
-        for(j = 0; j < numbers_per_poly; j++)
+        for(j = 0; j < numbers_per_poly && i < tried_numbers; j++)
         {
             /* We need to keep 'aux2' around */
             mpz_set(aux3, aux2);
