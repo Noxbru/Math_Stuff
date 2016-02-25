@@ -19,6 +19,33 @@ static inline void print_bit64(uint64_t u)
     fputs(str, stdout);
 }
 
+static void sort_internal(uint64_t *b,
+        mpz_t *x, mpz_t *y, unsigned int size)
+{
+    unsigned int i, j, m_index;
+    uint64_t m;
+
+    for(i = 0; i < size - 1; i++)
+    {
+        m = b[i];
+        m_index = i;
+        for(j = i+1; j < size; j++)
+        {
+            if(b[j] > m)
+            {
+                m = b[j];
+                m_index = j;
+            }
+        }
+
+        {
+            uint64_t lb = b[i]; b[i] = m; b[m_index] = lb;
+            mpz_swap(x[i], x[m_index]);
+            mpz_swap(y[i], y[m_index]);
+        }
+    }
+}
+
 static void test_numbers(mpz_ptr out,
         mpz_t *x, mpz_t *y,
         unsigned int *indices, unsigned int size,
@@ -170,6 +197,8 @@ void quadratic_sieve(mpz_ptr out, mpz_t n)
         poly_factor++;
         printf("POLYNOMIAL CHANGE!\n");
     }
+
+    sort_internal(bits, relations_x, relations_y, tried_numbers);
 
     for(i = 0; i < tried_numbers; i++)
     {
