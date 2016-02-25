@@ -6,7 +6,7 @@
 #include "primes_table.h"
 #include "factor.h"
 
-#define tried_numbers 50
+#define tried_numbers 19
 
 static inline void print_bit64(uint64_t u)
 {
@@ -81,6 +81,73 @@ static void test_numbers(mpz_ptr out,
     mpz_clears(aux, x_accumulator, y_accumulator, NULL);
 }
 
+static void solve_by_magic(mpz_ptr out,
+        uint64_t *bits,
+        mpz_t *x, mpz_t *y, unsigned int size,
+        mpz_ptr n)
+{
+    unsigned int i, j;
+    unsigned int *stack_of_indices;
+    unsigned int number_of_indices;
+    uint64_t b;
+
+    stack_of_indices = malloc(size * sizeof(unsigned int));
+
+    for(i = 0; i < size; i++)
+    {
+        b = bits[i];
+        stack_of_indices[0] = i;
+        number_of_indices = 1;
+
+        for(j = stack_of_indices[number_of_indices - 1] + 1;
+                j < size || b != 0;
+                j++)
+        {
+            /* We have just removed one index, continue */
+            if(bits[j] > b)
+                continue;
+            /* Trick to check if we can remove a MSB from b:
+             * if the same MSB from b is set in bits[j], then
+             * b >> 1 will be less than bits[j] */
+            if(bits[j] > (b >> 1))
+            {
+                /* Put index onto stack */
+                b ^= bits[j];
+                stack_of_indices[number_of_indices] = j;
+                number_of_indices++;
+            }
+            else
+            {
+                if(number_of_indices == 1)
+                    break;
+
+                /* Pop index from stack */
+                number_of_indices--;
+                j = stack_of_indices[number_of_indices];
+                b ^= bits[j];
+            }
+        }
+
+        if(b == 0)
+        {
+            printf("FOUND!\n");
+            for(j = 0; j < number_of_indices; j++)
+            {
+                printf("%u\t", stack_of_indices[j]);
+            }
+            printf("\n");
+
+            test_numbers(out, x, y, stack_of_indices, number_of_indices, n);
+
+            if(mpz_cmp_ui(out,1) && mpz_cmp(out, n))
+                goto out;
+        }
+    }
+
+out:
+    free(stack_of_indices);
+}
+
 void quadratic_sieve(mpz_ptr out, mpz_t n)
 {
     unsigned int i, j, k;
@@ -92,7 +159,7 @@ void quadratic_sieve(mpz_ptr out, mpz_t n)
     mpz_t *relations_y;
 
     unsigned int *prime_base;
-    unsigned int prime_base_size = 18;
+    unsigned int prime_base_size = 15;
 
     mpz_t aux0, aux1, aux2, aux3;
 
@@ -206,6 +273,8 @@ void quadratic_sieve(mpz_ptr out, mpz_t n)
         print_bit64(bits[i]);
         printf("\n");
     }
+
+    solve_by_magic(out, bits, relations_x, relations_y, tried_numbers, n);
 
     for(i = 0; i < tried_numbers; i++)
     {
