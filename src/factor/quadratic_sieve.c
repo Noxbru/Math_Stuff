@@ -276,44 +276,6 @@ void quadratic_sieve(mpz_ptr out, mpz_t n)
 
     solve_by_magic(out, bits, relations_x, relations_y, tried_numbers, n);
 
-    for(i = 0; i < tried_numbers; i++)
-    {
-        indices[0] = i;
-        for(j = i+1; j < tried_numbers; j++)
-        {
-            indices[1] = j;
-            uint64_t t = bits[i] ^ bits[j];
-
-            if(t == 0)
-            {
-                printf("Possible factorization found! %d and %d\n",i, j);
-
-                test_numbers(out, relations_x, relations_y,
-                        indices, 2, n);
-
-                if(mpz_cmp_ui(out,1) && mpz_cmp(out, n))
-                    goto out;
-                    /*return;*/
-            }
-
-            for(k = j+1; k < tried_numbers; k++)
-            {
-                indices[2] = k;
-                if((t ^ bits[k]) == 0)
-                {
-                    printf("Possible factorization found! %d, %d and %d\n",i, j, k);
-
-                    test_numbers(out, relations_x, relations_y,
-                            indices, 3, n);
-
-                    if(mpz_cmp_ui(out,1) && mpz_cmp(out, n))
-                        goto out;
-                        /*return;*/
-                }
-            }
-        }
-    }
-
 out:
     for(i = 0; i < tried_numbers; i++)
     {
@@ -322,7 +284,6 @@ out:
     }
 
 out2:
-
     for(i = 1; i < tried_numbers; i++)
     {
         bits[0] |= bits[i];
