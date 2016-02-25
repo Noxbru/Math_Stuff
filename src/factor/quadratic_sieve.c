@@ -202,7 +202,7 @@ void quadratic_sieve(mpz_ptr out, mpz_t n)
 
     for(i = 0; i < tried_numbers; i++)
     {
-        gmp_printf("%2d: %Zd %Zd ", i, relations_x[i], relations_y[i]);
+        gmp_printf("%2d:\t%10Zd\t%15Zd\t", i, relations_x[i], relations_y[i]);
         print_bit64(bits[i]);
         printf("\n");
     }
