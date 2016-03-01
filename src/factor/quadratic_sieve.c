@@ -182,9 +182,9 @@ void quadratic_sieve(mpz_ptr out, mpz_t n)
     prime_base[0] = 2;
 
     /* i iterates over the primes, j puts them in the base */
-    for(i = 0, j = 1; j < prime_base_size; i++)
+    for(i = 2, j = 1; j < prime_base_size; i++)
     {
-        unsigned int prime = get_prime(i + 1);
+        unsigned int prime = get_prime(i);
         int kronecker_symbol = mpz_kronecker_ui(n, prime);
 
         /* huh? there was a little prime as factor */
