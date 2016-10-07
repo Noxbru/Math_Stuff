@@ -164,3 +164,109 @@ void pollard_rho3(mpz_ptr out, mpz_ptr n)
 out:
     mpz_clears(seq_1, seq_2, aux0, aux1, accumulator, NULL);
 }
+
+/* More Magic to Pollard's Rho algorithm */
+void pollard_rho4(mpz_ptr out, mpz_ptr n)
+{
+    unsigned int i, j, k;
+    unsigned int reps;
+    mpz_t seq;
+    mpz_t aux0, aux1;
+    mpz_t t0, t1, t2;
+    mpz_t a0, a1, a2, a3;
+    mpz_t accumulator;
+
+    mpz_init(seq);
+    mpz_inits(aux0, aux1, accumulator, t0, t1, t2, a0, a1, a2, a3, NULL);
+
+    mpz_sqrt(seq, n);
+
+    reps = mpz_sizeinbase(n, 2);
+
+    mpz_mul(aux0, seq, seq);
+    mpz_add_ui(aux0, aux0, 1);
+    mpz_mod(seq, aux0, n);
+
+    j = 63;
+    do
+    {
+        i = j;
+        mpz_set(t0, seq);
+
+        mpz_mul(aux0, t0, t0);
+        mpz_add_ui(aux0, aux0, 1);
+        mpz_mod(t1, aux0, n);
+
+        mpz_mul(aux0, t1, t1);
+        mpz_add_ui(aux0, aux0, 1);
+        mpz_mod(t2, aux0, n);
+
+        mpz_set(seq, t2);
+
+        mpz_add(a0, t1, t2);
+        mpz_add(a1, a0, t0);
+
+        mpz_mul(aux0, a0, t0);
+        mpz_mul(aux1, t1, t2);
+        mpz_add(a2, aux0, aux1);
+        mpz_sub_ui(a2, a2, 1);
+
+        mpz_add(aux0, t1, a2);
+        mpz_mul(a3, aux0, a0);
+
+        j += 2;
+
+        do
+        {
+            mpz_mul(aux0, seq, seq);
+            mpz_add_ui(aux0, aux0, 1);
+            mpz_mod(seq, aux0, n);
+
+            j++;
+        } while(j < 3*(i + 1)/2);
+
+        i = 2*i + 1;
+
+        do
+        {
+            k = 0;
+            mpz_set_ui(accumulator, 1);
+            do
+            {
+                mpz_mul(aux0, seq, seq);
+                mpz_add_ui(aux0, aux0, 1);
+                mpz_mod(seq, aux0, n);
+                mpz_mul(aux0, seq, seq);
+                mpz_add_ui(aux0, aux0, 1);
+                mpz_mod(seq, aux0, n);
+
+                mpz_sub(t0, seq, a1);
+
+                mpz_mul(aux0, seq, seq);
+                mpz_add_ui(aux0, aux0, 1);
+                mpz_mod(seq, aux0, n);
+
+                mpz_add(aux0, seq, a2);
+                mpz_mul(aux1, t0, aux0);
+                mpz_add(aux1, aux1, a3);
+
+                mpz_mul(aux0, accumulator, aux1);
+                mpz_mod(accumulator, aux0, n);
+
+                k++;
+                j+=3;
+            }
+            while(k < reps && j < i);
+
+            mpz_gcd(out, accumulator, n);
+
+            if(mpz_cmp_ui(out,1) != 0)
+                goto out;
+
+        } while(j < i);
+    }
+    while (1);
+
+out:
+    mpz_clears(seq, aux0, aux1, accumulator, t0, t1, t2, a0, a1, a2, a3, NULL);
+}
