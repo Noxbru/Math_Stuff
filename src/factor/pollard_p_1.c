@@ -2,7 +2,7 @@
 #include <math.h>
 
 #include "factor.h"
-#include "primes_table.h"
+#include "prime.h"
 
 void pollard_p_1(mpz_ptr out, mpz_ptr n, unsigned int b)
 {

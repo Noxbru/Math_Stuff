@@ -2,7 +2,7 @@
 #include <math.h>
 #include <assert.h>
 
-#include "primes_table.h"
+#include "prime.h"
 
 unsigned int primes_table_size = 0;
 #if PRIMES_TABLE_FAT

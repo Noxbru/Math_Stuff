@@ -3,7 +3,7 @@
 
 #include "factor.h"
 #include "elliptic.h"
-#include "primes_table.h"
+#include "prime.h"
 
 void elliptic(mpz_ptr out, mpz_ptr n)
 {
