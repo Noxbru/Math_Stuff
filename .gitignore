@@ -1,2 +1,6 @@
 build/
+build_clang/
+build_gcc/
 **.swp
+src/tags
+src/types_c.taghl
