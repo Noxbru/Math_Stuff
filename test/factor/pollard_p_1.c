@@ -13,7 +13,7 @@ int main(int argc, const char *argv[])
     mpz_init_set_str(number, argv[1], 0);
     mpz_init(factor);
 
-    pollard_p_1(factor, number, 40000);
+    pollard_p_1(factor, number, 10000);
     gmp_printf("%Zd\n",factor);
 
     mpz_clears(number, factor, NULL);
