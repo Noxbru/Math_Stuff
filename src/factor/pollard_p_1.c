@@ -36,7 +36,7 @@ void pollard_p_1(mpz_ptr out, mpz_ptr n, unsigned int b)
         mpz_gcd(out, aux1, n);
 
         if(mpz_cmp_ui(out,1) && mpz_cmp(out, n))
-            return;
+            goto out_phase_1;
 
         i++;
     }
@@ -63,7 +63,7 @@ void pollard_p_1(mpz_ptr out, mpz_ptr n, unsigned int b)
 
     /* We might get lucky, although it's very unlikely */
     if(mpz_cmp_ui(out,1) && mpz_cmp(out, n))
-        return;
+        goto out_phase_2;
 
     /* aux0 = base^p_n */
     mpz_set(aux0, base);
@@ -87,13 +87,16 @@ void pollard_p_1(mpz_ptr out, mpz_ptr n, unsigned int b)
             mpz_gcd(out, aux1, n);
 
             if(mpz_cmp_ui(out,1) && mpz_cmp(out, n))
-                return;
+                goto out_phase_2;
 
             prime = i;
         }
     }
 
+out_phase_2:
     for(i = 0; i < 16; i++)
         mpz_clear(aux_base[i]);
+
+out_phase_1:
     mpz_clears(base, aux0, aux1, aux2, NULL);
 }
