@@ -6,8 +6,12 @@
 #include "factor.h"
 #include "prime.h"
 
-void pollard_p_1(mpz_ptr out, mpz_ptr n, unsigned int b)
+/* Please, note that bound_1 and bound_2 are the NUMBER OF PRIMES
+ * tried, not that we try primes less than bound_1 for phase 1 and
+ * less than bound_2 for phase 2 */
+void pollard_p_1(mpz_ptr out, mpz_ptr n, unsigned int bound_1)
 {
+    const unsigned int bound_2 = 10 * bound_1;
     unsigned int i, size, prime;
     mpz_t aux0, aux1, aux2;
     mpz_t base;
@@ -15,7 +19,7 @@ void pollard_p_1(mpz_ptr out, mpz_ptr n, unsigned int b)
     mpz_inits(aux0, aux1, aux2, NULL);
     mpz_init_set_ui(base, 2);
 
-    generate_primes_table(b);
+    generate_primes_table(bound_1);
 
     mpz_sqrt(aux0, n);
     size = mpz_sizeinbase(aux0, 2);
@@ -40,7 +44,7 @@ void pollard_p_1(mpz_ptr out, mpz_ptr n, unsigned int b)
 
         i++;
     }
-    while (i < b);
+    while (i < bound_1);
 
     /* Start of Phase 2 of the algorithm */
     mpz_t *aux_base;
@@ -55,7 +59,7 @@ void pollard_p_1(mpz_ptr out, mpz_ptr n, unsigned int b)
         mpz_powm_ui(aux_base[i], base, 2 * i, n);
     }
 
-    prime = get_prime(b);
+    prime = get_prime(bound_1);
     mpz_powm_ui(aux2, base, prime, n);
     mpz_swap(base, aux2);
     mpz_sub_ui(aux1, base, 1);
@@ -67,7 +71,7 @@ void pollard_p_1(mpz_ptr out, mpz_ptr n, unsigned int b)
 
     /* aux0 = base^p_n */
     mpz_set(aux0, base);
-    for(i = prime + 2; i < 300000; i+=2)
+    for(i = prime + 2; bound_1 < bound_2; i+=2)
     {
         if(is_prime_rabin_miller_uint32(i) == PRIME_DEFINITELY_YES)
         {
@@ -90,6 +94,7 @@ void pollard_p_1(mpz_ptr out, mpz_ptr n, unsigned int b)
                 goto out_phase_2;
 
             prime = i;
+            bound_1++;
         }
     }
 
