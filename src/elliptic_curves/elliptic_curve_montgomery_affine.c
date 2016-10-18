@@ -7,7 +7,7 @@ int elliptic_curve_sum_montgomery_affine(elliptic_point *p_out,
         elliptic_point *p_in2,
         elliptic_context *ctx)
 {
-    int err;
+    int err = 0;
 
     if(mpz_cmp(p_in1->x, p_in2->x) == 0)
     {
@@ -36,12 +36,15 @@ int elliptic_curve_sum_montgomery_affine(elliptic_point *p_out,
 #endif
 
         mpz_sub(aux1, p_in2->x, p_in1->x);
-        err = mpz_invert(aux2, aux1, ctx->m);
-        if(err == 0)
+        mpz_gcdext(lambda, aux2, NULL, aux1, ctx->m);
+        if(mpz_cmp_ui(lambda, 1) != 0)
         {
-            mpz_gcd(p_out->x, aux1, ctx->m);
+            mpz_set(p_out->x, lambda);
+            err = 1;
             goto clean;
         }
+        else if(mpz_cmp_ui(aux2, 0) < 0)
+            mpz_add(aux2, aux2, ctx->m);
 
         mpz_sub(aux1, p_in2->y, p_in1->y);
         mpz_mul(lambda, aux1, aux2);        /* lambda = (y2 - y1) / (x2 - x1) */
@@ -67,14 +70,14 @@ clean:
 #endif
     }
 
-    return !err;
+    return err;
 }
 
 int elliptic_curve_double_montgomery_affine(elliptic_point *p_out,
         elliptic_point *p_in,
         elliptic_context *ctx)
 {
-    int err;
+    int err = 0;
 
 #if FAT_OBJECTS
     mpz_ptr aux1 = ctx->aux1;
@@ -99,12 +102,15 @@ int elliptic_curve_double_montgomery_affine(elliptic_point *p_out,
 
     mpz_add(aux1, p_in->y, p_in->y);
     mpz_mul(aux2, aux1, ctx->B);
-    err = mpz_invert(aux1, aux2, ctx->m);
-    if(err == 0)
+    mpz_gcdext(lambda, aux1, NULL, aux2, ctx->m);
+    if(mpz_cmp_ui(lambda, 1) != 0)
     {
-        mpz_gcd(p_out->x, aux2, ctx->m);
+        mpz_set(p_out->x, lambda);
+        err = 1;
         goto clean;
     }
+    else if(mpz_cmp_ui(aux1, 0) < 0)
+        mpz_add(aux1, aux1, ctx->m);
 
     mpz_mul(aux2, p_in->x, p_in->x);
     mpz_mul_ui(nu, aux2, 3);
@@ -131,7 +137,7 @@ clean:
     mpz_clears(aux1, aux2, lambda, nu, NULL);
 #endif
 
-    return !err;
+    return err;
 }
 
 int elliptic_curve_mul_montgomery_affine(elliptic_point *p_out,
