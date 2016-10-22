@@ -15,8 +15,11 @@ void fermat(mpz_ptr out, mpz_ptr n);
 void pollard_rho(mpz_ptr out, mpz_ptr n);
 void pollard_rho2(mpz_ptr out, mpz_ptr n);
 void pollard_rho3(mpz_ptr out, mpz_ptr n);
+void pollard_rho4(mpz_ptr out, mpz_ptr n);
 
 void pollard_p_1(mpz_ptr out, mpz_ptr n, unsigned int b);
+
+void quadratic_sieve(mpz_ptr out, mpz_ptr n);
 
 void shanks(mpz_ptr out, mpz_ptr n);
 

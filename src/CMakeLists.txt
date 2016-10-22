@@ -1,2 +1,4 @@
 add_subdirectory(elliptic_curves)
 add_subdirectory(factor)
+add_subdirectory(montgomery_multiplication)
+add_subdirectory(prime)

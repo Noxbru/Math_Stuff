@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "primes_table.h"
+#include "prime.h"
 
 int main(int argc, const char *argv[])
 {
