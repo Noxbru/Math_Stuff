@@ -159,7 +159,7 @@ void quadratic_sieve(mpz_ptr out, mpz_t n)
     mpz_t *relations_x;
     mpz_t *relations_y;
 
-    unsigned int *prime_base;
+    int *prime_base;
     unsigned int prime_base_size = 15;
 
     mpz_t aux0, aux1, aux2, aux3;
@@ -178,11 +178,12 @@ void quadratic_sieve(mpz_ptr out, mpz_t n)
      * need to grow the table every time we need a prime
      */
     generate_primes_table(prime_base_size * 2.1);
-    prime_base = malloc(prime_base_size * sizeof(unsigned int));
-    prime_base[0] = 2;
+    prime_base = malloc(prime_base_size * sizeof(int));
+    prime_base[0] = -1;
+    prime_base[1] = 2;
 
     /* i iterates over the primes, j puts them in the base */
-    for(i = 2, j = 1; j < prime_base_size; i++)
+    for(i = 2, j = 2; j < prime_base_size; i++)
     {
         unsigned int prime = get_prime(i);
         int kronecker_symbol = mpz_kronecker_ui(n, prime);
@@ -205,7 +206,7 @@ void quadratic_sieve(mpz_ptr out, mpz_t n)
     printf("The prime base is:\t");
     for(i = 0; i < prime_base_size; i++)
     {
-        printf("%u\t",prime_base[i]);
+        printf("%i\t",prime_base[i]);
     }
     printf("\n");
 
@@ -216,7 +217,8 @@ void quadratic_sieve(mpz_ptr out, mpz_t n)
         mpz_mul_ui(aux1, n, poly_factor);
 
         mpz_sqrt(aux0, aux1);
-        mpz_add_ui(aux0, aux0, 1);
+        /*mpz_add_ui(aux0, aux0, 1);*/
+        mpz_sub_ui(aux0, aux0, numbers_per_poly / 2);
         mpz_mul(aux1, aux0, aux0);
 
         mpz_sub(aux2, aux1, n);
@@ -228,7 +230,13 @@ void quadratic_sieve(mpz_ptr out, mpz_t n)
             /* We need to keep 'aux2' around */
             mpz_set(aux3, aux2);
 
-            for(k = 0; k < prime_base_size; k++)
+            if(mpz_cmp_ui(aux3, 0) < 0)
+            {
+                bits[found_relations] ^= 1ul;
+                mpz_neg(aux3, aux3);
+            }
+
+            for(k = 1; k < prime_base_size; k++)
             {
                 while(mpz_divisible_ui_p(aux3, prime_base[k]))
                 {
@@ -270,7 +278,7 @@ void quadratic_sieve(mpz_ptr out, mpz_t n)
 
     for(i = 0; i < tried_numbers; i++)
     {
-        gmp_printf("%2d:\t%10Zd\t%15Zd\t", i, relations_x[i], relations_y[i]);
+        gmp_printf("%2d:\t%10Zd\t%17Zd\t", i, relations_x[i], relations_y[i]);
         print_bit64(bits[i]);
         printf("\n");
     }
