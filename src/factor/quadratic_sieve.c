@@ -6,8 +6,6 @@
 #include "prime.h"
 #include "factor.h"
 
-#define tried_numbers 19
-
 static inline void print_bit64(uint64_t u)
 {
     char str[65];
@@ -160,7 +158,8 @@ void quadratic_sieve(mpz_ptr out, mpz_t n)
     mpz_t *relations_y;
 
     int *prime_base;
-    unsigned int prime_base_size = 15;
+    const unsigned int prime_base_size = mpz_sizeinbase(n, 2);
+    const unsigned int tried_numbers = 2 * prime_base_size;
 
     mpz_t aux0, aux1, aux2, aux3;
 
