@@ -114,7 +114,7 @@ int elliptic_curve_double_montgomery_affine(elliptic_point *p_out,
 
     mpz_mul(aux2, p_in->x, p_in->x);
     mpz_mul_ui(nu, aux2, 3);
-    mpz_mul_2exp(aux2, ctx->A, 1);
+    mpz_add(aux2, ctx->A, ctx->A);
     mpz_addmul(nu, aux2, p_in->x);
     mpz_add_ui(nu, nu, 1);
     mpz_mul(lambda, nu, aux1);          /* lambda = (3x^2 +2Ax + 1) / 2By */
