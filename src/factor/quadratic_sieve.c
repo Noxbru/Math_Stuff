@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <inttypes.h>
 
-#include "primes_table.h"
+#include "prime.h"
 #include "factor.h"
 
 #define tried_numbers 19
