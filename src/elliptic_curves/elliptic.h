@@ -336,8 +336,8 @@ static inline int elliptic_curve_sum(
     {
         if(p_out->type == POINT_AFFINE)
             return elliptic_curve_sum_weierstrass_affine(p_out, p_in1, p_in2, ctx);
-        /*else if(p_out->type == POINT_PROJECTIVE)*/
-            /*return elliptic_curve_sum_weierstrass_projective(p_out, p_in1, p_in2, ctx);*/
+        else if(p_out->type == POINT_PROJECTIVE)
+            return elliptic_curve_sum_weierstrass_projective(p_out, p_in1, p_in2, ctx);
     }
     else if(ctx->type == ELLIPTIC_CURVE_MONTGOMERY)
     {
@@ -357,8 +357,8 @@ static inline int elliptic_curve_double(
     {
         if(p_out->type == POINT_AFFINE)
             return elliptic_curve_double_weierstrass_affine(p_out, p_in, ctx);
-        /*else if(p_out->type == POINT_PROJECTIVE)*/
-            /*return elliptic_curve_double_weierstrass_projective(p_out, p_in, ctx);*/
+        else if(p_out->type == POINT_PROJECTIVE)
+            return elliptic_curve_double_weierstrass_projective(p_out, p_in, ctx);
     }
     else if(ctx->type == ELLIPTIC_CURVE_MONTGOMERY)
     {
@@ -379,8 +379,8 @@ static inline int elliptic_curve_mul(
     {
         if(p_out->type == POINT_AFFINE)
             return elliptic_curve_mul_weierstrass_affine(p_out, p_in, times, ctx);
-        /*else if(p_out->type == POINT_PROJECTIVE)*/
-            /*return elliptic_curve_mul_weierstrass_projective(p_out, p_in, times, ctx);*/
+        else if(p_out->type == POINT_PROJECTIVE)
+            return elliptic_curve_mul_weierstrass_projective(p_out, p_in, times, ctx);
     }
     else if(ctx->type == ELLIPTIC_CURVE_MONTGOMERY)
     {
